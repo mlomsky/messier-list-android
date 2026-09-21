@@ -33,7 +33,7 @@ class GeocodingRepository(private val context: Context) {
         label = if (!locality.isNullOrBlank()) locality else query,
         latitudeDeg = latitude,
         longitudeDeg = longitude,
-        elevationMeters = if (hasAltitude()) altitude else 0.0,
+        elevationMeters = 0.0,
         isCustom = true
     )
 }
