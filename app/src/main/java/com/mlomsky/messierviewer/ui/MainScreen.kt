@@ -56,7 +56,7 @@ private fun Double.toDms(positiveSuffix: String, negativeSuffix: String): String
     val minutesFull = (abs - degrees) * 60
     val minutes = minutesFull.toInt()
     val seconds = (minutesFull - minutes) * 60
-    return "%d°%d'%.1f\"%s".format(degrees, minutes, seconds, hemisphere)
+    return "%d°%d'%.0f\"%s".format(degrees, minutes, seconds, hemisphere)
 }
 
 @Composable
@@ -72,7 +72,15 @@ fun MainScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Tonight's Sky") },
+                title = {
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text("Tonight's Sky")
+                        Text(
+                            currentTime.atZone(zone).format(timeFormatter),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                },
                 actions = {
                     IconButton(onClick = onSetLocationClick) {
                         Icon(Icons.Filled.EditLocation, contentDescription = "Set location")
