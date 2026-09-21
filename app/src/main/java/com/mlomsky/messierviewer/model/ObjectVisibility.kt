@@ -7,7 +7,8 @@ import java.time.Instant
 data class ObjectVisibility(
     val target: CatalogTarget,
     val window: VisibilityWindow,
-    val currentAltitudeDeg: Double
+    val currentAltitudeDeg: Double,
+    val currentAzimuthDeg: Double
 ) {
     val sortableStartTime: Instant
         get() = window.riseTime ?: Instant.MIN

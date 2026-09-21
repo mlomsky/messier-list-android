@@ -195,7 +195,13 @@ private fun ObjectRow(visibility: ObjectVisibility, zone: ZoneId) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(visibility.target.displayName, style = MaterialTheme.typography.titleMedium)
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.Bottom) {
+                Text(visibility.target.displayName, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    "%.0f°/%.0f°".format(visibility.currentAltitudeDeg, visibility.currentAzimuthDeg),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
             val subtitle = when (val target = visibility.target) {
                 is CatalogTarget.Messier -> target.objectType
                 is CatalogTarget.PlanetTarget -> "Planet"

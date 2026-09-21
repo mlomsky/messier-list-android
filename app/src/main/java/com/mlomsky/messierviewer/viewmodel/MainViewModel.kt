@@ -177,15 +177,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val target = CatalogTarget.Messier(entry.number, entry.commonName, entry.objectType, entry.raDeg, entry.decDeg)
                 val provider = EquatorialPositionProvider { EquatorialCoordinates(entry.raDeg, entry.decDeg) }
                 val window = AltitudeSampler.sample(observer, provider, session.start, session.end, RiseSetThresholds.STAR_OR_PLANET)
-                val currentAltitudeDeg = provider.at(nowJd).toHorizontal(observer, nowJd).altitudeDeg
-                objects.add(ObjectVisibility(target, window, currentAltitudeDeg))
+                val nowHorizontal = provider.at(nowJd).toHorizontal(observer, nowJd)
+                objects.add(ObjectVisibility(target, window, nowHorizontal.altitudeDeg, nowHorizontal.azimuthDeg))
             }
             for (planet in Planet.entries) {
                 val target = CatalogTarget.PlanetTarget(planet)
                 val provider = EquatorialPositionProvider { jd -> PlanetPositions.geocentricEquatorial(planet, jd) }
                 val window = AltitudeSampler.sample(observer, provider, session.start, session.end, RiseSetThresholds.STAR_OR_PLANET)
-                val currentAltitudeDeg = provider.at(nowJd).toHorizontal(observer, nowJd).altitudeDeg
-                objects.add(ObjectVisibility(target, window, currentAltitudeDeg))
+                val nowHorizontal = provider.at(nowJd).toHorizontal(observer, nowJd)
+                objects.add(ObjectVisibility(target, window, nowHorizontal.altitudeDeg, nowHorizontal.azimuthDeg))
             }
 
             Triple(session, sunMoonTimes, objects.toList())
