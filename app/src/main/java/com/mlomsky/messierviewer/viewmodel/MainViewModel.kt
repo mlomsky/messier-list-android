@@ -186,9 +186,35 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun sortObjects(objects: List<ObjectVisibility>, mode: SortMode): List<ObjectVisibility> =
         when (mode) {
-            SortMode.NAME -> objects.sortedBy { it.target.displayName }
+            SortMode.NAME -> objects.sortedWith(compareBy(::naturalCompare) { it.target.displayName })
             SortMode.MAX_ELEVATION -> objects.sortedByDescending { it.window.maxAltitudeDeg }
             SortMode.START_TIME -> objects.sortedBy { it.sortableStartTime }
             SortMode.END_TIME -> objects.sortedBy { it.sortableEndTime }
         }
+
+    /** Compares strings so embedded digit runs sort numerically (M2 < M10) instead of lexically (M10 < M2). */
+    private fun naturalCompare(a: String, b: String): Int {
+        var i = 0
+        var j = 0
+        while (i < a.length && j < b.length) {
+            val ca = a[i]
+            val cb = b[j]
+            if (ca.isDigit() && cb.isDigit()) {
+                var iEnd = i
+                while (iEnd < a.length && a[iEnd].isDigit()) iEnd++
+                var jEnd = j
+                while (jEnd < b.length && b[jEnd].isDigit()) jEnd++
+                val cmp = a.substring(i, iEnd).toLong().compareTo(b.substring(j, jEnd).toLong())
+                if (cmp != 0) return cmp
+                i = iEnd
+                j = jEnd
+            } else {
+                val cmp = ca.compareTo(cb)
+                if (cmp != 0) return cmp
+                i++
+                j++
+            }
+        }
+        return (a.length - i) - (b.length - j)
+    }
 }
