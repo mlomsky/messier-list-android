@@ -8,8 +8,10 @@ current viewing session — a port of the logic from the
 
 ## Status
 
-Design/scaffolding stage — architecture decisions below are locked in;
-implementation is in progress.
+First implementation is complete and ready to open in Android Studio (see
+[Building](#building)). It hasn't been compiled or run yet — I don't have a
+JDK/Android SDK in this environment — so treat it as needing a first-build
+pass to shake out any typos.
 
 ## Core features
 
@@ -48,20 +50,53 @@ and object-type/difficulty metadata already vetted in
 [`Astronomy/Messier/Messier.py`](../../Astronomy/Messier/Messier.py), so
 results stay consistent between the desktop tool and this app.
 
-## Planned project structure
+## Project structure
 
 ```
 app/src/main/java/com/mlomsky/messierviewer/
-  astro/        Julian date, sidereal time, RA/Dec<->AltAz, sun/moon/planet
-                 position formulas, rise/set/transit calculations
-  data/         Location repository (GPS + saved custom location via
-                 DataStore), preferences (night mode)
-  model/        SkyObject, ViewingSession (6pm/6am window logic)
-  ui/           Compose screens, theme (including night-mode red theme)
+  astro/        JulianDate, SiderealTime, RA/Dec<->AltAz (Coordinates.kt),
+                 SunPosition, MoonPosition, PlanetPositions + PlanetElements,
+                 AltitudeSampler (generic rise/set/max-altitude finder)
+  data/         MessierCatalog (110 objects, ported from the Python project),
+                 LocationRepository (GPS + saved custom location via
+                 DataStore), GeocodingRepository (address search),
+                 PreferencesRepository (night mode)
+  model/        CatalogTarget, ObjectVisibility, ViewingSession (6pm/6am rule)
+  ui/           MainScreen, LocationSearchDialog, theme (incl. night-mode red)
   viewmodel/    MainViewModel
+  MainActivity.kt
 ```
+
+### Astronomy engine notes
+
+- **Sun**: Meeus's standard low-precision solar formula — high confidence,
+  this is the same algorithm behind most "sunrise/sunset calculator" tools.
+- **Moon**: Meeus's reduced-accuracy lunar series (~10' longitude accuracy) —
+  good enough for rise/set/altitude, not for precision pointing.
+- **Planets**: mean Keplerian orbital elements (Standish/JPL, valid
+  1800–2050) run through a Kepler-equation solver, no light-time/aberration
+  correction. This is the least-verified part of the engine (no compiler or
+  reference ephemeris was available while writing it) — worth spot-checking
+  a planet's rise/set time against Stellarium or timeanddate.com once the
+  app is running.
+- Messier RA/Dec are J2000 with no precession correction applied; the drift
+  by 2026 is well under the accuracy this app needs.
 
 ## Building
 
-Gradle wrapper and full source are being added as implementation proceeds.
-Open the project folder in Android Studio once scaffolding is complete.
+This was written without access to a JDK, Android SDK, or Gradle in the
+dev environment, so **it hasn't been compiled yet** — there may be a typo or
+two to fix on first build. To build it:
+
+1. Install [Android Studio](https://developer.android.com/studio) (bundles
+   the JDK, Kotlin compiler, and Gradle support — no separate Kotlin
+   install needed).
+2. Open this folder (`messier-list-android/`) in Android Studio.
+3. On first open, Android Studio will notice the Gradle wrapper jar is
+   missing and offer to generate it — accept that (or run `gradle wrapper`
+   yourself if you have a system Gradle install).
+4. Let Gradle sync, then Run on a device/emulator.
+
+If sync or build turns up errors, paste them back and they can be fixed
+directly — this first pass optimized for a complete, coherent app over
+guaranteeing zero-typo compilation.
