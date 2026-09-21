@@ -6,8 +6,8 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val NightRed = Color(0xFFFF3B30)
-private val NightBlack = Color(0xFF000000)
+val NightRed = Color(0xFFFF3B30)
+val NightBlack = Color(0xFF000000)
 
 /** Night-vision mode: black background, all text/accents red. */
 private val nightModeColorScheme = darkColorScheme(

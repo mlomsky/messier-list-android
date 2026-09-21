@@ -13,6 +13,7 @@ import com.mlomsky.messierviewer.astro.Planet
 import com.mlomsky.messierviewer.astro.PlanetPositions
 import com.mlomsky.messierviewer.astro.RiseSetThresholds
 import com.mlomsky.messierviewer.astro.SunPosition
+import com.mlomsky.messierviewer.astro.toHorizontal
 import com.mlomsky.messierviewer.data.AppLocation
 import com.mlomsky.messierviewer.data.DefaultLocation
 import com.mlomsky.messierviewer.data.GeocodingRepository
@@ -46,6 +47,7 @@ data class MainUiState(
     val location: AppLocation = DefaultLocation.NEW_YORK_CITY,
     val session: ViewingSession? = null,
     val sunMoonTimes: SunMoonTimes = SunMoonTimes(null, null, null, null),
+    val allObjects: List<ObjectVisibility> = emptyList(),
     val objects: List<ObjectVisibility> = emptyList(),
     val sortMode: SortMode = SortMode.NAME,
     val nightMode: Boolean = false,
@@ -105,7 +107,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             current.sortMode == SortMode.END_TIME && mode == SortMode.START_TIME -> SortMode.START_TIME
             else -> mode
         }
-        _uiState.value = current.copy(sortMode = next, objects = sortObjects(current.objects, next))
+        _uiState.value = current.copy(sortMode = next, objects = sortObjects(current.allObjects, next))
     }
 
     fun toggleNightMode() {
@@ -158,18 +160,22 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 moonset = moonWindow.setTime
             )
 
+            val nowJd = JulianDate.fromInstant(Instant.now())
+
             val objects = mutableListOf<ObjectVisibility>()
             for (entry in MessierCatalog.entries) {
                 val target = CatalogTarget.Messier(entry.number, entry.commonName, entry.objectType, entry.raDeg, entry.decDeg)
                 val provider = EquatorialPositionProvider { EquatorialCoordinates(entry.raDeg, entry.decDeg) }
                 val window = AltitudeSampler.sample(observer, provider, session.start, session.end, RiseSetThresholds.STAR_OR_PLANET)
-                objects.add(ObjectVisibility(target, window))
+                val currentAltitudeDeg = provider.at(nowJd).toHorizontal(observer, nowJd).altitudeDeg
+                objects.add(ObjectVisibility(target, window, currentAltitudeDeg))
             }
             for (planet in Planet.entries) {
                 val target = CatalogTarget.PlanetTarget(planet)
                 val provider = EquatorialPositionProvider { jd -> PlanetPositions.geocentricEquatorial(planet, jd) }
                 val window = AltitudeSampler.sample(observer, provider, session.start, session.end, RiseSetThresholds.STAR_OR_PLANET)
-                objects.add(ObjectVisibility(target, window))
+                val currentAltitudeDeg = provider.at(nowJd).toHorizontal(observer, nowJd).altitudeDeg
+                objects.add(ObjectVisibility(target, window, currentAltitudeDeg))
             }
 
             Triple(session, sunMoonTimes, objects.toList())
@@ -179,6 +185,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.value = current.copy(
             session = session,
             sunMoonTimes = sunMoonTimes,
+            allObjects = objects,
             objects = sortObjects(objects, sortMode),
             isLoading = false
         )
@@ -190,6 +197,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             SortMode.MAX_ELEVATION -> objects.sortedByDescending { it.window.maxAltitudeDeg }
             SortMode.START_TIME -> objects.sortedBy { it.sortableStartTime }
             SortMode.END_TIME -> objects.sortedBy { it.sortableEndTime }
+            SortMode.NOW -> objects.filter { it.isVisibleNow }.sortedByDescending { it.currentAltitudeDeg }
         }
 
     /** Compares strings so embedded digit runs sort numerically (M2 < M10) instead of lexically (M10 < M2). */

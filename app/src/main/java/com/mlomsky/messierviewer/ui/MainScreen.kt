@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.EditLocation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +35,8 @@ import com.mlomsky.messierviewer.data.AppLocation
 import com.mlomsky.messierviewer.model.CatalogTarget
 import com.mlomsky.messierviewer.model.ObjectVisibility
 import com.mlomsky.messierviewer.model.SortMode
+import com.mlomsky.messierviewer.ui.theme.NightBlack
+import com.mlomsky.messierviewer.ui.theme.NightRed
 import com.mlomsky.messierviewer.viewmodel.MainUiState
 import com.mlomsky.messierviewer.viewmodel.SunMoonTimes
 import java.time.Instant
@@ -84,7 +87,7 @@ fun MainScreen(
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             HeaderSection(state.location, currentTime, zone)
             SunMoonSection(state.sunMoonTimes, zone)
-            SortButtonsRow(state.sortMode, onSortSelected)
+            SortButtonsRow(state.sortMode, state.nightMode, onSortSelected)
             if (state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
@@ -132,27 +135,36 @@ private fun SunMoonStat(label: String, value: String) {
 }
 
 @Composable
-private fun SortButtonsRow(sortMode: SortMode, onSortSelected: (SortMode) -> Unit) {
+private fun SortButtonsRow(sortMode: SortMode, nightMode: Boolean, onSortSelected: (SortMode) -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        SortButton("Name", sortMode == SortMode.NAME) { onSortSelected(SortMode.NAME) }
-        SortButton("Max Elevation", sortMode == SortMode.MAX_ELEVATION) { onSortSelected(SortMode.MAX_ELEVATION) }
+        SortButton("Name", sortMode == SortMode.NAME, nightMode) { onSortSelected(SortMode.NAME) }
+        SortButton("Max Elevation", sortMode == SortMode.MAX_ELEVATION, nightMode) { onSortSelected(SortMode.MAX_ELEVATION) }
         val startEndLabel = if (sortMode == SortMode.END_TIME) "Set Time" else "Rise Time"
-        SortButton(startEndLabel, sortMode == SortMode.START_TIME || sortMode == SortMode.END_TIME) {
+        SortButton(startEndLabel, sortMode == SortMode.START_TIME || sortMode == SortMode.END_TIME, nightMode) {
             onSortSelected(if (sortMode == SortMode.START_TIME) SortMode.END_TIME else SortMode.START_TIME)
         }
+        SortButton("Now", sortMode == SortMode.NOW, nightMode) { onSortSelected(SortMode.NOW) }
     }
 }
 
 @Composable
-private fun RowScope.SortButton(label: String, selected: Boolean, onClick: () -> Unit) {
+private fun RowScope.SortButton(label: String, selected: Boolean, nightMode: Boolean, onClick: () -> Unit) {
     FilterChip(
         modifier = Modifier.weight(1f),
         selected = selected,
         onClick = onClick,
-        label = { Text(label, maxLines = 1) }
+        label = { Text(label, maxLines = 1) },
+        colors = if (nightMode) {
+            FilterChipDefaults.filterChipColors(
+                selectedContainerColor = NightRed,
+                selectedLabelColor = NightBlack
+            )
+        } else {
+            FilterChipDefaults.filterChipColors()
+        }
     )
 }
 
