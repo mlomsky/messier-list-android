@@ -125,9 +125,9 @@ private fun SortButtonsRow(sortMode: SortMode, onSortSelected: (SortMode) -> Uni
     ) {
         SortButton("Name", sortMode == SortMode.NAME) { onSortSelected(SortMode.NAME) }
         SortButton("Max Elevation", sortMode == SortMode.MAX_ELEVATION) { onSortSelected(SortMode.MAX_ELEVATION) }
-        val startEndLabel = if (sortMode == SortMode.END_TIME) "End Time" else "Start Time"
+        val startEndLabel = if (sortMode == SortMode.END_TIME) "Set Time" else "Rise Time"
         SortButton(startEndLabel, sortMode == SortMode.START_TIME || sortMode == SortMode.END_TIME) {
-            onSortSelected(SortMode.START_TIME)
+            onSortSelected(if (sortMode == SortMode.START_TIME) SortMode.END_TIME else SortMode.START_TIME)
         }
     }
 }
