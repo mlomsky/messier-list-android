@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Brightness2
 import androidx.compose.material.icons.filled.EditLocation
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -49,6 +50,14 @@ private val dateFormatter = DateTimeFormatter.ofPattern("EEEE, MMM d")
 private fun Instant?.formatTime(zone: ZoneId): String =
     this?.atZone(zone)?.format(timeFormatter) ?: "--"
 
+private val compassPoints = listOf("N", "NE", "E", "SE", "S", "SW", "W", "NW")
+
+private fun Double.toCardinalDirection(): String {
+    val normalized = ((this % 360) + 360) % 360
+    val index = ((normalized / 45.0) + 0.5).toInt() % 8
+    return compassPoints[index]
+}
+
 private fun Double.toDms(positiveSuffix: String, negativeSuffix: String): String {
     val hemisphere = if (this >= 0) positiveSuffix else negativeSuffix
     val abs = kotlin.math.abs(this)
@@ -65,7 +74,8 @@ fun MainScreen(
     currentTime: Instant,
     onSortSelected: (SortMode) -> Unit,
     onNightModeToggle: () -> Unit,
-    onSetLocationClick: () -> Unit
+    onSetLocationClick: () -> Unit,
+    onAboutClick: () -> Unit
 ) {
     val zone = ZoneId.systemDefault()
 
@@ -87,6 +97,9 @@ fun MainScreen(
                     }
                     IconButton(onClick = onNightModeToggle) {
                         Icon(Icons.Filled.Brightness2, contentDescription = "Toggle night mode")
+                    }
+                    IconButton(onClick = onAboutClick) {
+                        Icon(Icons.Filled.Info, contentDescription = "About")
                     }
                 }
             )
@@ -198,7 +211,11 @@ private fun ObjectRow(visibility: ObjectVisibility, zone: ZoneId) {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.Bottom) {
                 Text(visibility.target.displayName, style = MaterialTheme.typography.titleMedium)
                 Text(
-                    "%.0f°/%.0f°".format(visibility.currentAltitudeDeg, visibility.currentAzimuthDeg),
+                    "%.0f°/%.0f° %s".format(
+                        visibility.currentAltitudeDeg,
+                        visibility.currentAzimuthDeg,
+                        visibility.currentAzimuthDeg.toCardinalDirection()
+                    ),
                     style = MaterialTheme.typography.bodySmall
                 )
             }

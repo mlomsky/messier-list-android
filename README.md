@@ -8,10 +8,9 @@ current viewing session — a port of the logic from the
 
 ## Status
 
-First implementation is complete and ready to open in Android Studio (see
-[Building](#building)). It hasn't been compiled or run yet — I don't have a
-JDK/Android SDK in this environment — so treat it as needing a first-build
-pass to shake out any typos.
+Builds, runs, and has been tested on both an emulator and a physical device
+(Galaxy S24+). See [NOTES.md](NOTES.md) for a running log of what's been
+built session-to-session, known caveats, and open ideas for next time.
 
 ## Core features
 
