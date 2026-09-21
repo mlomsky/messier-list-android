@@ -8,7 +8,10 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Locale
 import kotlin.coroutines.resume
 
-class GeocodingRepository(private val context: Context) {
+class GeocodingRepository(
+    private val context: Context,
+    private val elevationRepository: ElevationRepository = ElevationRepository()
+) {
 
     /** Resolves a free-text address/place name to a location, or null if not found. */
     suspend fun search(query: String): AppLocation? {
@@ -19,7 +22,9 @@ class GeocodingRepository(private val context: Context) {
             @Suppress("DEPRECATION")
             geocoder.getFromLocationName(query, 1)?.firstOrNull()
         }
-        return address?.toAppLocation(query)
+        val location = address?.toAppLocation(query) ?: return null
+        val elevation = elevationRepository.lookupMeters(location.latitudeDeg, location.longitudeDeg)
+        return if (elevation != null) location.copy(elevationMeters = elevation) else location
     }
 
     private suspend fun geocodeAsync(geocoder: Geocoder, query: String): Address? =

@@ -46,6 +46,16 @@ private val dateFormatter = DateTimeFormatter.ofPattern("EEEE, MMM d")
 private fun Instant?.formatTime(zone: ZoneId): String =
     this?.atZone(zone)?.format(timeFormatter) ?: "--"
 
+private fun Double.toDms(positiveSuffix: String, negativeSuffix: String): String {
+    val hemisphere = if (this >= 0) positiveSuffix else negativeSuffix
+    val abs = kotlin.math.abs(this)
+    val degrees = abs.toInt()
+    val minutesFull = (abs - degrees) * 60
+    val minutes = minutesFull.toInt()
+    val seconds = (minutesFull - minutes) * 60
+    return "%d°%d'%.1f\"%s".format(degrees, minutes, seconds, hemisphere)
+}
+
 @Composable
 fun MainScreen(
     state: MainUiState,
@@ -90,6 +100,10 @@ fun MainScreen(
 private fun HeaderSection(location: AppLocation, currentTime: Instant, zone: ZoneId) {
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
         Text(location.label, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        val elevationFeet = location.elevationMeters * 3.28084
+        val coordsText = "${location.latitudeDeg.toDms("N", "S")}  ${location.longitudeDeg.toDms("E", "W")}  " +
+            "%.0f ft elev".format(elevationFeet)
+        Text(coordsText, style = MaterialTheme.typography.bodySmall)
         val zoned = currentTime.atZone(zone)
         Text(zoned.format(dateFormatter) + "   " + zoned.format(timeFormatter), style = MaterialTheme.typography.bodyLarge)
     }

@@ -37,7 +37,10 @@ object DefaultLocation {
     )
 }
 
-class LocationRepository(private val context: Context) {
+class LocationRepository(
+    private val context: Context,
+    private val elevationRepository: ElevationRepository = ElevationRepository()
+) {
 
     private val keyLabel = stringPreferencesKey("custom_label")
     private val keyLat = doublePreferencesKey("custom_lat")
@@ -86,6 +89,21 @@ class LocationRepository(private val context: Context) {
         return requestSingleUpdate(locationManager)?.toAppLocation()
     }
 
+    private suspend fun Location.toAppLocation(): AppLocation {
+        val elevation = if (hasAltitude() && altitude != 0.0) {
+            altitude
+        } else {
+            elevationRepository.lookupMeters(latitude, longitude) ?: 0.0
+        }
+        return AppLocation(
+            label = "Current Location",
+            latitudeDeg = latitude,
+            longitudeDeg = longitude,
+            elevationMeters = elevation,
+            isCustom = false
+        )
+    }
+
     private fun bestLastKnownLocation(locationManager: LocationManager): Location? {
         val providers = locationManager.getProviders(true)
         return providers.mapNotNull { provider ->
@@ -123,12 +141,4 @@ class LocationRepository(private val context: Context) {
             }
             continuation.invokeOnCancellation { locationManager.removeUpdates(listener) }
         }
-
-    private fun Location.toAppLocation() = AppLocation(
-        label = "Current Location",
-        latitudeDeg = latitude,
-        longitudeDeg = longitude,
-        elevationMeters = if (hasAltitude()) altitude else 0.0,
-        isCustom = false
-    )
 }
