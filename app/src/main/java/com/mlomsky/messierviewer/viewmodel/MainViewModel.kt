@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -40,13 +41,14 @@ data class SunMoonTimes(
     val sunrise: Instant?,
     val sunset: Instant?,
     val moonrise: Instant?,
-    val moonset: Instant?
+    val moonset: Instant?,
+    val moonIlluminationPercent: Double
 )
 
 data class MainUiState(
     val location: AppLocation = DefaultLocation.NEW_YORK_CITY,
     val session: ViewingSession? = null,
-    val sunMoonTimes: SunMoonTimes = SunMoonTimes(null, null, null, null),
+    val sunMoonTimes: SunMoonTimes = SunMoonTimes(null, null, null, null, 0.0),
     val allObjects: List<ObjectVisibility> = emptyList(),
     val objects: List<ObjectVisibility> = emptyList(),
     val sortMode: SortMode = SortMode.NAME,
@@ -142,25 +144,33 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val session = ViewingSession.forNow(ZonedDateTime.now(zone))
             val observer = Observer(location.latitudeDeg, location.longitudeDeg, location.elevationMeters)
 
+            // Sun/moon rise-set are searched over the "observing night" (local noon to local noon,
+            // centered on the 6pm-6am session) rather than just the session window itself, so a
+            // sunrise/sunset/moonrise/moonset that falls outside 6pm-6am still gets reported instead
+            // of showing as missing.
+            val sunMoonWindowStart = session.start.minus(Duration.ofHours(6))
+            val sunMoonWindowEnd = session.end.plus(Duration.ofHours(6))
+
             val sunProvider = EquatorialPositionProvider { jd -> SunPosition.geocentricEquatorial(jd) }
             val sunWindow = AltitudeSampler.sample(
-                observer, sunProvider, session.start, session.end, RiseSetThresholds.SUN
+                observer, sunProvider, sunMoonWindowStart, sunMoonWindowEnd, RiseSetThresholds.SUN
             )
 
             val moonParallax = MoonPosition.geocentric(JulianDate.fromInstant(session.start)).horizontalParallaxDeg
             val moonProvider = EquatorialPositionProvider { jd -> MoonPosition.geocentric(jd).equatorial }
             val moonWindow = AltitudeSampler.sample(
-                observer, moonProvider, session.start, session.end, RiseSetThresholds.moon(moonParallax)
+                observer, moonProvider, sunMoonWindowStart, sunMoonWindowEnd, RiseSetThresholds.moon(moonParallax)
             )
+
+            val nowJd = JulianDate.fromInstant(Instant.now())
 
             val sunMoonTimes = SunMoonTimes(
                 sunrise = sunWindow.riseTime,
                 sunset = sunWindow.setTime,
                 moonrise = moonWindow.riseTime,
-                moonset = moonWindow.setTime
+                moonset = moonWindow.setTime,
+                moonIlluminationPercent = MoonPosition.illuminatedFraction(nowJd) * 100.0
             )
-
-            val nowJd = JulianDate.fromInstant(Instant.now())
 
             val objects = mutableListOf<ObjectVisibility>()
             for (entry in MessierCatalog.entries) {

@@ -122,6 +122,7 @@ private fun SunMoonSection(times: SunMoonTimes, zone: ZoneId) {
         SunMoonStat("Sunrise", times.sunrise.formatTime(zone))
         SunMoonStat("Moonrise", times.moonrise.formatTime(zone))
         SunMoonStat("Moonset", times.moonset.formatTime(zone))
+        SunMoonStat("Illumination", "%.0f%%".format(times.moonIlluminationPercent))
     }
     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 }

@@ -65,4 +65,17 @@ object MoonPosition {
 
         return MoonPositionResult(EquatorialCoordinates(ra, dec), parallax)
     }
+
+    /**
+     * Fraction of the Moon's disk illuminated (0 = new, 1 = full), via Meeus's simpler
+     * geocentric-elongation method (ch. 48): k = (1 - cos(elongation from the Sun)) / 2.
+     */
+    fun illuminatedFraction(jd: Double): Double {
+        val moon = geocentric(jd).equatorial
+        val sun = SunPosition.geocentricEquatorial(jd)
+        val cosElongation = sinDeg(moon.declinationDeg) * sinDeg(sun.declinationDeg) +
+            cosDeg(moon.declinationDeg) * cosDeg(sun.declinationDeg) *
+            cosDeg(moon.rightAscensionDeg - sun.rightAscensionDeg)
+        return (1 - cosElongation) / 2
+    }
 }
