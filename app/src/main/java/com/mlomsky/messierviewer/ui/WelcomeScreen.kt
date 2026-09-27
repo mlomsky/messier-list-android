@@ -30,7 +30,7 @@ fun WelcomeScreen() {
             AppIconBadge(size = 96.dp)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "Tonight's Sky",
+                "Messier Tonight",
                 style = MaterialTheme.typography.headlineMedium,
                 color = SplashForeground
             )

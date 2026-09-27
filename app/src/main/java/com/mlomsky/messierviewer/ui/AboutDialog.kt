@@ -19,7 +19,7 @@ import com.mlomsky.messierviewer.BuildConfig
 fun AboutDialog(onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Tonight's Sky") },
+        title = { Text("Messier Tonight") },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),

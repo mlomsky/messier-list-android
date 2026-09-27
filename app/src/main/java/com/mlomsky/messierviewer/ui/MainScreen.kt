@@ -84,7 +84,7 @@ fun MainScreen(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("Tonight's Sky")
+                        Text("Messier Tonight")
                         Text(
                             currentTime.atZone(zone).format(timeFormatter),
                             style = MaterialTheme.typography.bodyMedium

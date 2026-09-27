@@ -78,17 +78,52 @@ feature set from the README is implemented, plus everything in the log below.
   `app-debug.apk` to the phone (USB file transfer or Drive), open it from
   Files, allow install from that source once, install.
 
+## Play Store plan (decided, not yet started)
+
+- Renamed the in-app title text to "Messier Tonight" everywhere (top bar,
+  welcome screen, About dialog) to match `strings.xml`'s `app_name` — they
+  were inconsistent before.
+- Strategy: **soft-launch via the user's astronomy club** before touching
+  Play Console. Built `TESTER_INSTALL_GUIDE.md` (plain-language sideload
+  instructions for non-developers) and zipped it with the current
+  `app-debug.apk` into `MessierTonight-Beta.zip`, posted to the club's
+  Discord for feedback.
+- Branding decision: **keeping personal name/credit** ("Created by Michael
+  Lomsky") for now rather than branding it under the club's name — may
+  revisit after talking to the club more.
+- Play Store account plan, when they get there: likely a **new, separate
+  Google account** dedicated to the developer identity (not their primary
+  account) — organizational separation, not anonymity (Google still
+  requires real ID verification regardless). The public "developer name"
+  on the store listing doesn't have to be a real name, so this doesn't
+  block the personal-branding decision above.
+- Google Play requires new personal developer accounts to run a **closed
+  testing track with 12+ testers enrolled continuously for 14 days**
+  before unlocking production publishing — the club is the natural source
+  for those 12 testers when the time comes.
+- Ads (AdMob): **deferred to a possible future update**, not part of
+  initial release. User is skeptical they'll bother, leaning instead
+  toward the app just being a free community tool/goodwill gesture for the
+  club. If revisited: needs AdMob account + SDK integration + Data Safety
+  form update + privacy policy update — none of that is done yet.
+- Still need before any Play Store submission: signing keystore + `.aab`
+  release build, store listing assets (icon, screenshots, feature
+  graphic), a hosted privacy policy page (required due to location
+  permission use), Data Safety form, content rating questionnaire.
+
 ## Open for next session
 
+- **Waiting on club feedback** from the Discord beta drop — check whether
+  anything's come back before planning next features.
 - **User wants more personalization**, beyond the welcome screen/About
   dialog — no specifics yet. Plan was to use the app for a while and
-  "noodle on it" first. Possible directions to float next time (not yet
-  requested, just brainstorming fodder): time-of-day-aware greeting, a
-  favorites/pinned-objects list, a user-chosen accent color, home-location
-  presets beyond the single saved custom slot.
-- Debug APK is unsigned/unoptimized — fine for personal use. A real Play
-  Store release would need a signing keystore, store listing assets, a
-  privacy policy, etc. — explicitly out of scope for now.
+  "noodle on it" first, and club feedback may now shape this too. Possible
+  directions to float next time (not yet requested, just brainstorming
+  fodder): time-of-day-aware greeting, a favorites/pinned-objects list, a
+  user-chosen accent color, home-location presets beyond the single saved
+  custom slot.
+- Debug APK is unsigned/unoptimized — fine for personal/club testing. The
+  Play Store path above is decided in outline but not yet started.
 - Planet positions are the least-verified part of the astronomy engine (no
   compiler/reference ephemeris was available when first written) — worth
   spot-checking against Stellarium or timeanddate.com if precision ever
