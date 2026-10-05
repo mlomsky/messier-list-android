@@ -66,6 +66,36 @@ feature set from the README is implemented, plus everything in the log below.
     `AboutDialog.kt` (ⓘ icon in the top bar — app icon, version pulled live
     from `BuildConfig.VERSION_NAME`, creator credit, description).
 
+## Version 2 session
+
+Full detail in [CHANGELOG.md](CHANGELOG.md); short version:
+
+15. **NGC catalog added** (~4,000 objects scraped from Wikipedia, bundled as
+    `assets/ngc_catalog.json`). Planets/Messier/NGC are now independently
+    toggleable buttons under the title bar. A "Display Filters" dialog (tune
+    icon) sets an NGC magnitude limit — applied *before* rise/set sampling,
+    which is what keeps turning NGC on from being slow — plus a
+    hide-below-horizon checkbox that applies to all catalogs.
+16. **Search dialog** (magnifying glass): name/type/direction/min-altitude,
+    combinable, instant (filters already-computed data, no re-sampling).
+17. **Favorites**: star button on every object (any catalog), persisted via
+    DataStore; a ★ sort-mode button filters to just favorites (tap again to
+    turn off). This resolves the "favorites/pinned-objects list" idea from
+    the "Open for next session" list below.
+18. **Nebula filter button (F)** now works on every object, not just
+    Messier — same UHC/OIII/H-Beta/Light Pollution/custom checkbox dialog.
+19. **Magnitude everywhere**: Messier (from Sky at Night's reference table)
+    and NGC (from the scrape) already had it; planets now show a mean
+    apparent magnitude from Wikipedia's "Apparent magnitude" page.
+20. Fixed a bug where long NGC names squished the altitude/azimuth text off
+    the row, and a bug where the night-mode "F" button picked up Material's
+    default purple/white dark-theme colors instead of the app's red/black
+    night theme.
+21. Help dialog rewritten to cover all of the above, with a down-arrow
+    indicator when there's more to scroll to. About dialog and the splash
+    screen now say "Version 2"; About also lists a "What's new in v2" bullet
+    summary. `versionCode`/`versionName` bumped to 2 / "2.0".
+
 ## Deploying to a phone (Galaxy S24+, no Play Store)
 
 - Developer options: **Settings → About phone → Software information → tap
@@ -115,13 +145,14 @@ feature set from the README is implemented, plus everything in the log below.
 
 - **Waiting on club feedback** from the Discord beta drop — check whether
   anything's come back before planning next features.
-- **User wants more personalization**, beyond the welcome screen/About
-  dialog — no specifics yet. Plan was to use the app for a while and
-  "noodle on it" first, and club feedback may now shape this too. Possible
-  directions to float next time (not yet requested, just brainstorming
-  fodder): time-of-day-aware greeting, a favorites/pinned-objects list, a
+- **More personalization**: favorites/pinned-objects is now done (v2). Still
+  just brainstorming fodder, not yet requested: time-of-day-aware greeting, a
   user-chosen accent color, home-location presets beyond the single saved
   custom slot.
+- **NGC data quality**: the scrape strips known junk (duplicates, nonexistent
+  entries, "(Located in...)" annotations, footnote markers) as it's found,
+  but with ~4,000 entries there may be more odd ones lurking — flag any that
+  turn up while browsing the list.
 - Debug APK is unsigned/unoptimized — fine for personal/club testing. The
   Play Store path above is decided in outline but not yet started.
 - Planet positions are the least-verified part of the astronomy engine (no

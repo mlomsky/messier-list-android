@@ -9,23 +9,38 @@ current viewing session — a port of the logic from the
 ## Status
 
 Builds, runs, and has been tested on both an emulator and a physical device
-(Galaxy S24+). See [NOTES.md](NOTES.md) for a running log of what's been
-built session-to-session, known caveats, and open ideas for next time.
+(Galaxy S24+). Now at **version 2** — see [CHANGELOG.md](CHANGELOG.md) for
+what's new in v2, and [NOTES.md](NOTES.md) for a running session-by-session
+log, known caveats, and open ideas for next time.
 
 ## Core features
 
+- **Catalogs**: Messier (110 objects), the NGC catalog (~4,000 objects), and
+  the naked-eye/telescope planets — each independently toggleable. A
+  magnitude-limit dialog keeps the NGC list to a manageable size.
 - **Location**: uses GPS by default, falling back to New York City if
   location is unavailable. A "Set Location" button allows searching by
   address/city name instead.
+- **Search**: filter the current list by name, object type, compass
+  direction, and/or minimum current altitude.
+- **Favorites**: star any object, on any catalog; a dedicated sort mode
+  shows just your favorites.
+- **Nebula filter tracking**: an "F" button on every object records which
+  filter (UHC/OIII/H-Beta/Light Pollution/custom) works best for it; several
+  Messier objects ship with a starting recommendation.
 - **Night mode**: a toggle that switches all text to red, to preserve night
   vision during observing sessions.
 - **Header**: shows current location, date, and time, plus moonrise,
   moonset, sunrise, and sunset for that location.
-- **Object list**: every Messier object and the naked-eye/telescope planets,
-  sortable by:
+- **Object list**: shows apparent magnitude for every object (a representative
+  mean value for planets, since their real brightness varies with position),
+  and the altitude/azimuth/compass direction, which dims out once an object
+  is below the horizon. Sortable by:
   - Name
   - Max elevation during the session
   - Start or end time (when the object rises/sets above the horizon)
+  - Now (only objects currently above the horizon)
+  - Favorites
 - **Viewing session window**: one observing session runs from 6pm local time
   to 6am the next day. The app picks the correct window based on when it's
   opened:
@@ -42,27 +57,46 @@ built session-to-session, known caveats, and open ideas for next time.
 | Manual location entry | Android `Geocoder` address search | Mirrors the Python app's Nominatim-based address search UX; requires network only when the user explicitly sets a location. |
 | Location persistence | Single remembered custom location (DataStore) | GPS is the default path; one overwritable "custom location" slot is enough, unlike the Python app's multi-preset `user_data_folder`. |
 
-## Data reused from the Python project
+## Data sources
 
-The Messier catalog (110 objects) reuses the J2000 ICRS RA/Dec coordinates
-and object-type/difficulty metadata already vetted in
-[`Astronomy/Messier/Messier.py`](../../Astronomy/Messier/Messier.py), so
-results stay consistent between the desktop tool and this app.
+- **Messier catalog** (110 objects) reuses the J2000 ICRS RA/Dec coordinates
+  and object-type/difficulty metadata already vetted in
+  [`Astronomy/Messier/Messier.py`](../../Astronomy/Messier/Messier.py), so
+  results stay consistent between the desktop tool and this app. Apparent
+  magnitudes added from Sky at Night's Messier catalogue reference table.
+- **NGC catalog** (~4,000 objects) scraped from Wikipedia's "List of NGC
+  objects" series; bundled as `assets/ngc_catalog.json`.
+- **Planet magnitudes** are mean apparent-magnitude values from Wikipedia's
+  "Apparent magnitude" reference table — a representative figure, not a live
+  computation, since a planet's actual brightness varies with its position.
 
 ## Project structure
 
 ```
+app/src/main/assets/
+  ngc_catalog.json   NGC catalog data (see "Data sources" above)
+
 app/src/main/java/com/mlomsky/messierviewer/
   astro/        JulianDate, SiderealTime, RA/Dec<->AltAz (Coordinates.kt),
                  SunPosition, MoonPosition, PlanetPositions + PlanetElements,
-                 AltitudeSampler (generic rise/set/max-altitude finder)
-  data/         MessierCatalog (110 objects, ported from the Python project),
-                 LocationRepository (GPS + saved custom location via
-                 DataStore), GeocodingRepository (address search),
-                 PreferencesRepository (night mode)
-  model/        CatalogTarget, ObjectVisibility, ViewingSession (6pm/6am rule)
-  ui/           MainScreen, LocationSearchDialog, theme (incl. night-mode red)
-  viewmodel/    MainViewModel
+                 AltitudeSampler (generic rise/set/max-altitude finder),
+                 CardinalDirection (azimuth -> N/NE/E/.../NW)
+  data/         MessierCatalog (110 objects), NgcCatalog (loads the bundled
+                 JSON asset), DefaultFilters (starting nebula-filter
+                 recommendations), FilterText (checkbox <-> stored-string
+                 conversion for the filter dialog), LocationRepository
+                 (GPS + saved custom location via DataStore),
+                 GeocodingRepository (address search), PreferencesRepository
+                 (night mode, enabled catalogs, NGC magnitude limit,
+                 hide-below-horizon, favorites, per-object filter overrides)
+  model/        CatalogTarget (Messier/Ngc/PlanetTarget + typeLabel),
+                 ObjectVisibility, SortMode, CatalogSource,
+                 ViewingSession (6pm/6am rule)
+  ui/           MainScreen (catalog toggles, sort row, object list),
+                 SearchDialog, DisplayFiltersDialog, FilterEditDialog,
+                 HelpDialog, AboutDialog, LocationSearchDialog, WelcomeScreen,
+                 theme (incl. night-mode red)
+  viewmodel/    MainViewModel (ObjectSearchFilter, display-filter pipeline)
   MainActivity.kt
 ```
 
@@ -83,19 +117,13 @@ app/src/main/java/com/mlomsky/messierviewer/
 
 ## Building
 
-This was written without access to a JDK, Android SDK, or Gradle in the
-dev environment, so **it hasn't been compiled yet** — there may be a typo or
-two to fix on first build. To build it:
-
 1. Install [Android Studio](https://developer.android.com/studio) (bundles
    the JDK, Kotlin compiler, and Gradle support — no separate Kotlin
    install needed).
-2. Open this folder (`messier-list-android/`) in Android Studio.
-3. On first open, Android Studio will notice the Gradle wrapper jar is
-   missing and offer to generate it — accept that (or run `gradle wrapper`
-   yourself if you have a system Gradle install).
-4. Let Gradle sync, then Run on a device/emulator.
+2. Open this folder (`messier-list-android/`) in Android Studio and let
+   Gradle sync.
+3. Run on a device/emulator (▶), or `Build → Generate APKs` for a debug APK
+   to sideload — see [NOTES.md](NOTES.md) for phone-deployment steps.
 
-If sync or build turns up errors, paste them back and they can be fixed
-directly — this first pass optimized for a complete, coherent app over
-guaranteeing zero-typo compilation.
+The dev environment this was built in has no command-line JDK/Gradle, so
+building and running happens through Android Studio.
