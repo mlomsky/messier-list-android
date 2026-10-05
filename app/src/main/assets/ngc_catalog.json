@@ -468,15 +468,6 @@
 "commonName": "The Whale Galaxy"
 },
 {
-"number": 56,
-"objectType": "Nonexistent",
-"constellation": "Pisces",
-"raDeg": 3.75,
-"decDeg": 12.45,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 57,
 "objectType": "Elliptical galaxy",
 "constellation": "Pisces",
@@ -882,15 +873,6 @@
 "commonName": null
 },
 {
-"number": 111,
-"objectType": "Unknown",
-"constellation": "Cetus",
-"raDeg": 6.7542,
-"decDeg": -2.6336,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 112,
 "objectType": "Barred spiral galaxy",
 "constellation": "Andromeda",
@@ -924,15 +906,6 @@
 "raDeg": 6.6942,
 "decDeg": -33.6767,
 "magnitude": 14.0,
-"commonName": null
-},
-{
-"number": 116,
-"objectType": "Doesn't exist",
-"constellation": "Cetus",
-"raDeg": 6.7721,
-"decDeg": -7.6681,
-"magnitude": 14.5,
 "commonName": null
 },
 {
@@ -2430,15 +2403,6 @@
 "commonName": "(Located in Small Magellanic Cloud )"
 },
 {
-"number": 295,
-"objectType": "Unknown",
-"constellation": "Pisces",
-"raDeg": 13.7821,
-"decDeg": 31.5422,
-"magnitude": 13.5,
-"commonName": null
-},
-{
 "number": 296,
 "objectType": "Spiral galaxy",
 "constellation": "Pisces",
@@ -3483,15 +3447,6 @@
 "commonName": "(Located in Small Magellanic Cloud )"
 },
 {
-"number": 412,
-"objectType": "Unknown",
-"constellation": "Cetus",
-"raDeg": 17.5854,
-"decDeg": -20.0158,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 413,
 "objectType": "Spiral galaxy",
 "constellation": "Cetus",
@@ -3561,15 +3516,6 @@
 "raDeg": 18.0408,
 "decDeg": 32.1233,
 "magnitude": 13.4,
-"commonName": null
-},
-{
-"number": 421,
-"objectType": "Unknown",
-"constellation": "Pisces",
-"raDeg": 18.0042,
-"decDeg": 32.1503,
-"magnitude": null,
 "commonName": null
 },
 {
@@ -5253,24 +5199,6 @@
 "raDeg": 24.1038,
 "decDeg": 64.5367,
 "magnitude": 12.3,
-"commonName": null
-},
-{
-"number": 610,
-"objectType": "Unknown",
-"constellation": "Cetus",
-"raDeg": 23.5042,
-"decDeg": -20.1503,
-"magnitude": null,
-"commonName": null
-},
-{
-"number": 611,
-"objectType": "Unknown",
-"constellation": "Cetus",
-"raDeg": 23.5042,
-"decDeg": -20.1336,
-"magnitude": null,
 "commonName": null
 },
 {
@@ -8010,15 +7938,6 @@
 "commonName": null
 },
 {
-"number": 930,
-"objectType": "Unknown",
-"constellation": "Aries",
-"raDeg": 37.0042,
-"decDeg": 20.3336,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 931,
 "objectType": "Spiral galaxy",
 "constellation": "Triangulum",
@@ -8195,15 +8114,6 @@
 "constellation": "Cetus",
 "raDeg": 37.2371,
 "decDeg": -22.3486,
-"magnitude": null,
-"commonName": null
-},
-{
-"number": 952,
-"objectType": "Unknown",
-"constellation": "Triangulum",
-"raDeg": 37.75,
-"decDeg": 34.75,
 "magnitude": null,
 "commonName": null
 },
@@ -12501,15 +12411,6 @@
 "commonName": null
 },
 {
-"number": 1458,
-"objectType": "Unknown",
-"constellation": "Eridanus",
-"raDeg": 56.7429,
-"decDeg": -18.2411,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 1459,
 "objectType": "Barred spiral galaxy",
 "constellation": "Reticulum",
@@ -13797,15 +13698,6 @@
 "commonName": null
 },
 {
-"number": 1610,
-"objectType": "Unknown",
-"constellation": "Eridanus",
-"raDeg": 68.1863,
-"decDeg": -4.5819,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 1611,
 "objectType": "Barred lenticular galaxy",
 "constellation": "Eridanus",
@@ -14344,24 +14236,6 @@
 "decDeg": -69.8214,
 "magnitude": 14.1,
 "commonName": "(Located in Large Magellanic Cloud ) [ 11 ]"
-},
-{
-"number": 1674,
-"objectType": "Unknown",
-"constellation": "Taurus",
-"raDeg": 73.1042,
-"decDeg": 23.8603,
-"magnitude": null,
-"commonName": null
-},
-{
-"number": 1675,
-"objectType": "Unknown",
-"constellation": "Taurus",
-"raDeg": 73.1042,
-"decDeg": 23.8603,
-"magnitude": null,
-"commonName": null
 },
 {
 "number": 1676,
@@ -18963,15 +18837,6 @@
 "commonName": null
 },
 {
-"number": 2198,
-"objectType": "Unknown",
-"constellation": "Orion",
-"raDeg": 93.475,
-"decDeg": 0.9919,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 2199,
 "objectType": "Unbarred spiral galaxy",
 "constellation": "Mensa",
@@ -19143,15 +19008,6 @@
 "commonName": null
 },
 {
-"number": 2218,
-"objectType": "Unknown",
-"constellation": "Gemini",
-"raDeg": 96.1708,
-"decDeg": 19.3356,
-"magnitude": null,
-"commonName": null
-},
-{
 "number": 2219,
 "objectType": "Open cluster",
 "constellation": "Monoceros",
@@ -19213,15 +19069,6 @@
 "decDeg": -9.6431,
 "magnitude": null,
 "commonName": "Adjacent to NGC 2226"
-},
-{
-"number": 2226,
-"objectType": "Unknown",
-"constellation": "Monoceros",
-"raDeg": 96.6708,
-"decDeg": -9.6492,
-"magnitude": null,
-"commonName": "Adjacent to NGC 2225"
 },
 {
 "number": 2227,
@@ -28172,7 +28019,7 @@
 {
 "number": 5008,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 212.7375,
 "decDeg": 25.4964,
 "magnitude": 13.4,
@@ -28766,7 +28613,7 @@
 {
 "number": 5251,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 204.3534,
 "decDeg": 27.4192,
 "magnitude": 13.9,
@@ -29153,7 +29000,7 @@
 {
 "number": 5416,
 "objectType": "Spiral galaxy , radio galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 210.5458,
 "decDeg": 9.44,
 "magnitude": 13.6,
@@ -29234,7 +29081,7 @@
 {
 "number": 5466,
 "objectType": "Globular cluster",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 211.3642,
 "decDeg": 28.5344,
 "magnitude": 10.5,
@@ -29315,7 +29162,7 @@
 {
 "number": 5490,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 212.4889,
 "decDeg": 17.5454,
 "magnitude": 12.9,
@@ -29342,7 +29189,7 @@
 {
 "number": 5500,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 212.5625,
 "decDeg": 48.5461,
 "magnitude": 14.0,
@@ -29369,7 +29216,7 @@
 {
 "number": 5504,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 213.0658,
 "decDeg": 15.8425,
 "magnitude": 14.0,
@@ -29387,7 +29234,7 @@
 {
 "number": 5508,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 213.1208,
 "decDeg": 24.6356,
 "magnitude": 13.8,
@@ -29396,7 +29243,7 @@
 {
 "number": 5514,
 "objectType": "Interacting galaxies",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 213.4112,
 "decDeg": 7.6604,
 "magnitude": 14.2,
@@ -29414,7 +29261,7 @@
 {
 "number": 5523,
 "objectType": "Unbarred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 213.718,
 "decDeg": 25.3176,
 "magnitude": 12.75,
@@ -29423,7 +29270,7 @@
 {
 "number": 5529,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 213.8917,
 "decDeg": 36.2267,
 "magnitude": 12.8,
@@ -29441,7 +29288,7 @@
 {
 "number": 5532,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.2204,
 "decDeg": 10.8075,
 "magnitude": 12.59,
@@ -29450,7 +29297,7 @@
 {
 "number": 5533,
 "objectType": "Unbarred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.0323,
 "decDeg": 35.3438,
 "magnitude": 11.81,
@@ -29459,7 +29306,7 @@
 {
 "number": 5535,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.3803,
 "decDeg": 8.2084,
 "magnitude": 15.0,
@@ -29468,7 +29315,7 @@
 {
 "number": 5539,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.4075,
 "decDeg": 8.1796,
 "magnitude": 14.2,
@@ -29477,7 +29324,7 @@
 {
 "number": 5541,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.1323,
 "decDeg": 39.5892,
 "magnitude": 12.7,
@@ -29486,7 +29333,7 @@
 {
 "number": 5544,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.261,
 "decDeg": 36.5711,
 "magnitude": 14.0,
@@ -29495,7 +29342,7 @@
 {
 "number": 5545,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.2718,
 "decDeg": 36.5752,
 "magnitude": 18.5,
@@ -29504,7 +29351,7 @@
 {
 "number": 5548,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.4988,
 "decDeg": 25.1369,
 "magnitude": 13.1,
@@ -29522,7 +29369,7 @@
 {
 "number": 5557,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.6071,
 "decDeg": 36.4937,
 "magnitude": 12.2,
@@ -29531,7 +29378,7 @@
 {
 "number": 5559,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 214.8033,
 "decDeg": 24.7986,
 "magnitude": 14.81,
@@ -29540,7 +29387,7 @@
 {
 "number": 5562,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.0458,
 "decDeg": 10.2633,
 "magnitude": 13.6,
@@ -29567,7 +29414,7 @@
 {
 "number": 5579,
 "objectType": "Intermediate spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.1104,
 "decDeg": 35.1888,
 "magnitude": 14.7,
@@ -29576,7 +29423,7 @@
 {
 "number": 5582,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.1797,
 "decDeg": 39.6936,
 "magnitude": 11.61,
@@ -29603,7 +29450,7 @@
 {
 "number": 5587,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.545,
 "decDeg": 13.9175,
 "magnitude": 14.0,
@@ -29612,7 +29459,7 @@
 {
 "number": 5591,
 "objectType": "Spiral galaxy , peculiar",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.6388,
 "decDeg": 13.7172,
 "magnitude": 14.0,
@@ -29630,7 +29477,7 @@
 {
 "number": 5598,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.6179,
 "decDeg": 40.3197,
 "magnitude": 13.0,
@@ -29639,7 +29486,7 @@
 {
 "number": 5600,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.9562,
 "decDeg": 14.6392,
 "magnitude": 12.7,
@@ -29648,7 +29495,7 @@
 {
 "number": 5601,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.7217,
 "decDeg": 40.3094,
 "magnitude": 14.7,
@@ -29666,7 +29513,7 @@
 {
 "number": 5609,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 215.9512,
 "decDeg": 34.8428,
 "magnitude": 15.7,
@@ -29684,7 +29531,7 @@
 {
 "number": 5613,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 216.0248,
 "decDeg": 34.892,
 "magnitude": 15.5,
@@ -29693,7 +29540,7 @@
 {
 "number": 5614,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 216.0316,
 "decDeg": 34.8589,
 "magnitude": 12.6,
@@ -29702,7 +29549,7 @@
 {
 "number": 5615,
 "objectType": "Irregular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 216.0267,
 "decDeg": 34.865,
 "magnitude": 17.8,
@@ -29738,7 +29585,7 @@
 {
 "number": 5630,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 216.9025,
 "decDeg": 41.2578,
 "magnitude": 13.0,
@@ -29765,7 +29612,7 @@
 {
 "number": 5641,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 217.3192,
 "decDeg": 28.8219,
 "magnitude": 13.0,
@@ -29783,7 +29630,7 @@
 {
 "number": 5653,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 217.5442,
 "decDeg": 31.215,
 "magnitude": 12.7,
@@ -29801,7 +29648,7 @@
 {
 "number": 5665,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 218.1075,
 "decDeg": 8.0785,
 "magnitude": 12.7,
@@ -29837,7 +29684,7 @@
 {
 "number": 5676,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 218.195,
 "decDeg": 49.4578,
 "magnitude": 12.3,
@@ -29855,7 +29702,7 @@
 {
 "number": 5681,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 218.9288,
 "decDeg": 8.3006,
 "magnitude": 14.3,
@@ -29873,7 +29720,7 @@
 {
 "number": 5698,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 219.3112,
 "decDeg": 38.4543,
 "magnitude": 13.6,
@@ -29900,7 +29747,7 @@
 {
 "number": 5714,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 219.5481,
 "decDeg": 46.6384,
 "magnitude": 14.2,
@@ -29927,7 +29774,7 @@
 {
 "number": 5722,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 219.7267,
 "decDeg": 46.6656,
 "magnitude": 15.0,
@@ -29945,7 +29792,7 @@
 {
 "number": 5735,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 220.6385,
 "decDeg": 28.7265,
 "magnitude": 13.1,
@@ -29990,7 +29837,7 @@
 {
 "number": 5772,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 222.912,
 "decDeg": 40.5992,
 "magnitude": 13.3,
@@ -30026,7 +29873,7 @@
 {
 "number": 5778,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 223.6312,
 "decDeg": 18.6424,
 "magnitude": null,
@@ -30035,7 +29882,7 @@
 {
 "number": 5784,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 223.5685,
 "decDeg": 42.0579,
 "magnitude": 12.4,
@@ -30044,7 +29891,7 @@
 {
 "number": 5790,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 224.3992,
 "decDeg": 8.2853,
 "magnitude": 15.1,
@@ -30080,7 +29927,7 @@
 {
 "number": 5820,
 "objectType": "Lenticular galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 224.6659,
 "decDeg": 53.8861,
 "magnitude": 11.98,
@@ -30089,7 +29936,7 @@
 {
 "number": 5821,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 224.7488,
 "decDeg": 53.9232,
 "magnitude": 14.6,
@@ -30125,7 +29972,7 @@
 {
 "number": 5825,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 223.6312,
 "decDeg": 18.6419,
 "magnitude": 15.6,
@@ -30134,7 +29981,7 @@
 {
 "number": 5829,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 225.675,
 "decDeg": 23.3333,
 "magnitude": 14.1,
@@ -30143,7 +29990,7 @@
 {
 "number": 5837,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 226.1692,
 "decDeg": 12.6333,
 "magnitude": 14.5,
@@ -30197,7 +30044,7 @@
 {
 "number": 5856,
 "objectType": "Triple star",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 226.8349,
 "decDeg": 18.4418,
 "magnitude": 6.03,
@@ -30206,7 +30053,7 @@
 {
 "number": 5857,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 226.8637,
 "decDeg": 19.5978,
 "magnitude": 13.1,
@@ -30233,7 +30080,7 @@
 {
 "number": 5875,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 227.3048,
 "decDeg": 52.5284,
 "magnitude": 12.4,
@@ -30242,7 +30089,7 @@
 {
 "number": 5876,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 227.3815,
 "decDeg": 54.5065,
 "magnitude": 12.7,
@@ -30287,7 +30134,7 @@
 {
 "number": 5886,
 "objectType": "Elliptical galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 228.1892,
 "decDeg": 41.2006,
 "magnitude": 14.0,
@@ -30296,7 +30143,7 @@
 {
 "number": 5888,
 "objectType": "Barred spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 228.2808,
 "decDeg": 41.2644,
 "magnitude": 13.4,
@@ -30314,7 +30161,7 @@
 {
 "number": 5896,
 "objectType": "Spiral galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 228.4611,
 "decDeg": 42.0242,
 "magnitude": null,
@@ -30413,7 +30260,7 @@
 {
 "number": 5929,
 "objectType": "Seyfert galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 231.5333,
 "decDeg": 41.6761,
 "magnitude": 14.0,
@@ -30422,7 +30269,7 @@
 {
 "number": 5930,
 "objectType": "Starburst galaxy",
-"constellation": "Boötes",
+"constellation": "Bo\u00f6tes",
 "raDeg": 231.5333,
 "decDeg": 41.6761,
 "magnitude": 12.2,
@@ -34872,15 +34719,6 @@
 "raDeg": 348.3083,
 "decDeg": -28.3575,
 "magnitude": 11.3,
-"commonName": null
-},
-{
-"number": 7522,
-"objectType": "Unknown",
-"constellation": "Aquarius",
-"raDeg": 348.9017,
-"decDeg": -22.895,
-"magnitude": null,
 "commonName": null
 },
 {

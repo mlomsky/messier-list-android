@@ -96,6 +96,36 @@ Full detail in [CHANGELOG.md](CHANGELOG.md); short version:
     screen now say "Version 2"; About also lists a "What's new in v2" bullet
     summary. `versionCode`/`versionName` bumped to 2 / "2.0".
 
+## Version 2.1 session
+
+Explored on a throwaway `image-popup` branch first (idea the user wasn't
+sure they'd keep), then merged in once it proved out. Full detail in
+[CHANGELOG.md](CHANGELOG.md); short version:
+
+22. **Elevation chart popup**: tap any object's name (any catalog) for a
+    chart of its altitude across tonight's session, below-horizon portion
+    shaded. Built on a new `AltitudeSampler.series()` helper (the existing
+    rise/set sampler was refactored to reuse it, not duplicated).
+23. **Sun & Moon chart popup**: tap Sunset/Sunrise/Moonrise/Moonset/
+    Illumination for a combined Sun+Moon altitude chart, with the
+    background shaded by the Sun's own altitude — daylight clear, then
+    progressively darker bands for civil/nautical twilight, astronomical
+    twilight (-12° to -18°), and full night (below -18°). Chart lines stay
+    in the red family in Night Mode to preserve dark adaptation; removed
+    the per-hour vertical gridlines after the first pass looked too busy,
+    keeping just the hour labels, horizontal gridlines, and shaded bands.
+24. **NGC catalog cleanup**: removed 18 entries whose scraped type was
+    "Nonexistent", "Doesn't exist", or bare "Unknown" (4,034 → 4,016
+    entries) — see the "NGC data quality" item below, now partially
+    addressed.
+25. NGC rows with no published magnitude now show "Mag --" instead of
+    silently dropping the magnitude segment, matching Messier's format.
+    ~425 of 4,016 NGC entries (10.6%) still have no magnitude in the
+    Wikipedia source data — mostly open clusters, double/plain stars, and
+    some galaxies — that's a data-source gap, not a display bug.
+26. `versionCode`/`versionName` bumped to 3 / "2.1"; About/splash updated
+    with a "What's new in v2.1" summary alongside the existing v2 one.
+
 ## Deploying to a phone (Galaxy S24+, no Play Store)
 
 - Developer options: **Settings → About phone → Software information → tap

@@ -60,6 +60,10 @@ fun HelpDialog(onDismiss: () -> Unit) {
                         "Shown even if they fall slightly outside the 6pm-6am session, since the search window is widened a bit around it. A missing moonrise or moonset on a given night is expected sometimes — it matches real published moon tables, not a bug."
                     )
                     HelpItem(
+                        "Sun & Moon chart",
+                        "Tap Sunset, Sunrise, Moonrise, Moonset, or Illumination to see the Sun's and Moon's altitude across the whole session. The background shades as the sky darkens: clear by day, a light band through twilight, a darker band for astronomical twilight, and the darkest band once it's fully dark."
+                    )
+                    HelpItem(
                         "Night Mode",
                         "The moon icon switches all text to red to preserve your night vision while observing."
                     )
@@ -70,6 +74,10 @@ fun HelpDialog(onDismiss: () -> Unit) {
                     HelpItem(
                         "Object list",
                         "Every object from the catalogs you've turned on: Messier, NGC, and the naked-eye/telescope planets. Current altitude/azimuth and compass direction sit next to each name, turning red (grey in Night Mode) once the object drops to or below the horizon. Max elevation and rise/set time for the session are on the right."
+                    )
+                    HelpItem(
+                        "Elevation chart",
+                        "Tap any object's name to see a chart of its altitude across tonight's session, with the below-horizon portion shaded so you can see at a glance how much of the night it's up."
                     )
                     HelpItem(
                         "Magnitude",

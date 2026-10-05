@@ -36,7 +36,7 @@ fun WelcomeScreen() {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                "Version 2",
+                "Version 2.1",
                 style = MaterialTheme.typography.bodySmall,
                 color = SplashForeground
             )

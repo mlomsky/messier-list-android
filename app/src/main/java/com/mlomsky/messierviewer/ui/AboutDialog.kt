@@ -34,7 +34,7 @@ fun AboutDialog(onDismiss: () -> Unit) {
                 AppIconBadge()
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    "Version 2  •  ${LocalDate.now().format(aboutDateFormatter)}",
+                    "Version 2.1  •  ${LocalDate.now().format(aboutDateFormatter)}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -45,6 +45,18 @@ fun AboutDialog(onDismiss: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text("What's new in v2.1", style = MaterialTheme.typography.labelLarge)
+                Spacer(modifier = Modifier.height(4.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    val newChanges = listOf(
+                        "Tap any object's name for an elevation chart across tonight's session",
+                        "Tap Sunset/Sunrise/Moonrise/Moonset/Illumination for a Sun & Moon altitude chart with twilight and night shading"
+                    )
+                    newChanges.forEach { change ->
+                        Text("•  $change", style = MaterialTheme.typography.bodySmall)
+                    }
+                }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text("What's new in v2", style = MaterialTheme.typography.labelLarge)
                 Spacer(modifier = Modifier.height(4.dp))

@@ -17,11 +17,13 @@ import androidx.compose.runtime.setValue
 import com.mlomsky.messierviewer.model.CatalogTarget
 import com.mlomsky.messierviewer.ui.AboutDialog
 import com.mlomsky.messierviewer.ui.DisplayFiltersDialog
+import com.mlomsky.messierviewer.ui.ElevationChartDialog
 import com.mlomsky.messierviewer.ui.FilterEditDialog
 import com.mlomsky.messierviewer.ui.HelpDialog
 import com.mlomsky.messierviewer.ui.LocationSearchDialog
 import com.mlomsky.messierviewer.ui.MainScreen
 import com.mlomsky.messierviewer.ui.SearchDialog
+import com.mlomsky.messierviewer.ui.SunMoonChartDialog
 import com.mlomsky.messierviewer.ui.WelcomeScreen
 import com.mlomsky.messierviewer.ui.theme.MessierViewerTheme
 import com.mlomsky.messierviewer.viewmodel.MainViewModel
@@ -48,6 +50,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val uiState by viewModel.uiState.collectAsState()
             val currentTime by viewModel.currentTime.collectAsState()
+            val elevationChart by viewModel.elevationChart.collectAsState()
+            val sunMoonChart by viewModel.sunMoonChart.collectAsState()
             var showLocationDialog by remember { mutableStateOf(false) }
             var showAboutDialog by remember { mutableStateOf(false) }
             var showHelpDialog by remember { mutableStateOf(false) }
@@ -79,8 +83,28 @@ class MainActivity : ComponentActivity() {
                         onFavoriteClick = { id -> viewModel.toggleFavorite(id) },
                         onCatalogToggle = { source, enabled -> viewModel.setCatalogEnabled(source, enabled) },
                         onDisplayFiltersClick = { showDisplayFiltersDialog = true },
-                        onSearchClick = { showSearchDialog = true }
+                        onSearchClick = { showSearchDialog = true },
+                        onObjectClick = { viewModel.showElevationChart(it) },
+                        onSunMoonClick = { viewModel.showSunMoonChart() }
                     )
+
+                    elevationChart?.let { chartState ->
+                        ElevationChartDialog(
+                            state = chartState,
+                            currentTime = currentTime,
+                            nightMode = uiState.nightMode,
+                            onDismiss = { viewModel.dismissElevationChart() }
+                        )
+                    }
+
+                    sunMoonChart?.let { chartState ->
+                        SunMoonChartDialog(
+                            state = chartState,
+                            currentTime = currentTime,
+                            nightMode = uiState.nightMode,
+                            onDismiss = { viewModel.dismissSunMoonChart() }
+                        )
+                    }
 
                     if (showAboutDialog) {
                         AboutDialog(onDismiss = { showAboutDialog = false })
