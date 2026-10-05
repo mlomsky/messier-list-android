@@ -36,6 +36,12 @@ fun WelcomeScreen() {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
+                "Version 2",
+                style = MaterialTheme.typography.bodySmall,
+                color = SplashForeground
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
                 "Created by Michael Lomsky",
                 style = MaterialTheme.typography.bodyMedium,
                 color = SplashForeground

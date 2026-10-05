@@ -2,20 +2,31 @@
 
 package com.mlomsky.messierviewer.ui
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Brightness2
 import androidx.compose.material.icons.filled.EditLocation
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -23,16 +34,22 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mlomsky.messierviewer.BuildConfig
+import com.mlomsky.messierviewer.astro.toCardinalDirection
 import com.mlomsky.messierviewer.data.AppLocation
+import com.mlomsky.messierviewer.model.CatalogSource
 import com.mlomsky.messierviewer.model.CatalogTarget
 import com.mlomsky.messierviewer.model.ObjectVisibility
 import com.mlomsky.messierviewer.model.SortMode
@@ -49,14 +66,6 @@ private val dateFormatter = DateTimeFormatter.ofPattern("EEEE, MMM d")
 
 private fun Instant?.formatTime(zone: ZoneId): String =
     this?.atZone(zone)?.format(timeFormatter) ?: "--"
-
-private val compassPoints = listOf("N", "NE", "E", "SE", "S", "SW", "W", "NW")
-
-private fun Double.toCardinalDirection(): String {
-    val normalized = ((this % 360) + 360) % 360
-    val index = ((normalized / 45.0) + 0.5).toInt() % 8
-    return compassPoints[index]
-}
 
 private fun Double.toDms(positiveSuffix: String, negativeSuffix: String): String {
     val hemisphere = if (this >= 0) positiveSuffix else negativeSuffix
@@ -75,7 +84,13 @@ fun MainScreen(
     onSortSelected: (SortMode) -> Unit,
     onNightModeToggle: () -> Unit,
     onSetLocationClick: () -> Unit,
-    onAboutClick: () -> Unit
+    onAboutClick: () -> Unit,
+    onHelpClick: () -> Unit,
+    onFilterClick: (CatalogTarget) -> Unit,
+    onFavoriteClick: (String) -> Unit,
+    onCatalogToggle: (CatalogSource, Boolean) -> Unit,
+    onDisplayFiltersClick: () -> Unit,
+    onSearchClick: () -> Unit
 ) {
     val zone = ZoneId.systemDefault()
 
@@ -83,15 +98,12 @@ fun MainScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("Messier Tonight")
-                        Text(
-                            currentTime.atZone(zone).format(timeFormatter),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
+                    Text("Messier Tonight  V${BuildConfig.VERSION_NAME}")
                 },
                 actions = {
+                    IconButton(onClick = onHelpClick) {
+                        Icon(Icons.Filled.Help, contentDescription = "Help")
+                    }
                     IconButton(onClick = onSetLocationClick) {
                         Icon(Icons.Filled.EditLocation, contentDescription = "Set location")
                     }
@@ -106,6 +118,14 @@ fun MainScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+            CatalogToggleRow(
+                state.enabledCatalogs,
+                state.nightMode,
+                state.searchFilter.isActive,
+                onCatalogToggle,
+                onDisplayFiltersClick,
+                onSearchClick
+            )
             HeaderSection(state.location, currentTime, zone)
             SunMoonSection(state.sunMoonTimes, zone)
             SortButtonsRow(state.sortMode, state.nightMode, onSortSelected)
@@ -114,7 +134,15 @@ fun MainScreen(
                     CircularProgressIndicator()
                 }
             } else {
-                ObjectListSection(state.objects, zone)
+                ObjectListSection(
+                    state.objects,
+                    zone,
+                    state.filters,
+                    state.favorites,
+                    onFilterClick,
+                    onFavoriteClick,
+                    state.nightMode
+                )
             }
         }
     }
@@ -123,13 +151,13 @@ fun MainScreen(
 @Composable
 private fun HeaderSection(location: AppLocation, currentTime: Instant, zone: ZoneId) {
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
-        Text(location.label, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        Text(location.label, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
         val elevationFeet = location.elevationMeters * 3.28084
         val coordsText = "${location.latitudeDeg.toDms("N", "S")}  ${location.longitudeDeg.toDms("E", "W")}  " +
             "%.0f ft elev".format(elevationFeet)
-        Text(coordsText, style = MaterialTheme.typography.bodySmall)
+        Text(coordsText, style = MaterialTheme.typography.titleMedium)
         val zoned = currentTime.atZone(zone)
-        Text(zoned.format(dateFormatter) + "   " + zoned.format(timeFormatter), style = MaterialTheme.typography.bodyLarge)
+        Text(zoned.format(dateFormatter) + "   " + zoned.format(timeFormatter), style = MaterialTheme.typography.titleLarge)
     }
 }
 
@@ -169,6 +197,67 @@ private fun SortButtonsRow(sortMode: SortMode, nightMode: Boolean, onSortSelecte
             onSortSelected(if (sortMode == SortMode.START_TIME) SortMode.END_TIME else SortMode.START_TIME)
         }
         SortButton("Now", sortMode == SortMode.NOW, nightMode) { onSortSelected(SortMode.NOW) }
+        FavoritesSortButton(sortMode == SortMode.FAVORITES, nightMode) { onSortSelected(SortMode.FAVORITES) }
+    }
+}
+
+@Composable
+private fun RowScope.FavoritesSortButton(selected: Boolean, nightMode: Boolean, onClick: () -> Unit) {
+    FilterChip(
+        modifier = Modifier.weight(1f),
+        selected = selected,
+        onClick = onClick,
+        label = {
+            Icon(
+                imageVector = if (selected) Icons.Filled.Star else Icons.Outlined.StarBorder,
+                contentDescription = "Favorites",
+                modifier = Modifier.size(18.dp)
+            )
+        },
+        colors = if (nightMode) {
+            FilterChipDefaults.filterChipColors(
+                selectedContainerColor = NightRed,
+                selectedLabelColor = NightBlack
+            )
+        } else {
+            FilterChipDefaults.filterChipColors()
+        }
+    )
+}
+
+@Composable
+private fun CatalogToggleRow(
+    enabledCatalogs: Set<CatalogSource>,
+    nightMode: Boolean,
+    searchActive: Boolean,
+    onCatalogToggle: (CatalogSource, Boolean) -> Unit,
+    onDisplayFiltersClick: () -> Unit,
+    onSearchClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        SortButton("Planets", CatalogSource.PLANETS in enabledCatalogs, nightMode) {
+            onCatalogToggle(CatalogSource.PLANETS, CatalogSource.PLANETS !in enabledCatalogs)
+        }
+        SortButton("Messier", CatalogSource.MESSIER in enabledCatalogs, nightMode) {
+            onCatalogToggle(CatalogSource.MESSIER, CatalogSource.MESSIER !in enabledCatalogs)
+        }
+        SortButton("NGC", CatalogSource.NGC in enabledCatalogs, nightMode) {
+            onCatalogToggle(CatalogSource.NGC, CatalogSource.NGC !in enabledCatalogs)
+        }
+        IconButton(onClick = onSearchClick) {
+            Icon(
+                Icons.Filled.Search,
+                contentDescription = "Search objects",
+                tint = if (searchActive) MaterialTheme.colorScheme.primary else LocalContentColor.current
+            )
+        }
+        IconButton(onClick = onDisplayFiltersClick) {
+            Icon(Icons.Filled.Tune, contentDescription = "Display filters")
+        }
     }
 }
 
@@ -191,39 +280,88 @@ private fun RowScope.SortButton(label: String, selected: Boolean, nightMode: Boo
 }
 
 @Composable
-private fun ObjectListSection(objects: List<ObjectVisibility>, zone: ZoneId) {
+private fun ObjectListSection(
+    objects: List<ObjectVisibility>,
+    zone: ZoneId,
+    filters: Map<String, String>,
+    favorites: Set<String>,
+    onFilterClick: (CatalogTarget) -> Unit,
+    onFavoriteClick: (String) -> Unit,
+    nightMode: Boolean
+) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(objects, key = { it.target.id }) { visibility ->
-            ObjectRow(visibility, zone)
+            ObjectRow(
+                visibility,
+                zone,
+                filters[visibility.target.id],
+                visibility.target.id in favorites,
+                onFilterClick,
+                onFavoriteClick,
+                nightMode
+            )
             HorizontalDivider()
         }
     }
 }
 
 @Composable
-private fun ObjectRow(visibility: ObjectVisibility, zone: ZoneId) {
+private fun ObjectRow(
+    visibility: ObjectVisibility,
+    zone: ZoneId,
+    filterText: String?,
+    isFavorite: Boolean,
+    onFilterClick: (CatalogTarget) -> Unit,
+    onFavoriteClick: (String) -> Unit,
+    nightMode: Boolean
+) {
     val window = visibility.window
+    val target = visibility.target
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
+        FavoriteButton(isFavorite = isFavorite, nightMode = nightMode, onClick = { onFavoriteClick(target.id) })
+        Spacer(modifier = Modifier.width(4.dp))
+        FilterButton(hasFilter = !filterText.isNullOrBlank(), nightMode = nightMode, onClick = { onFilterClick(target) })
+        Spacer(modifier = Modifier.width(8.dp))
         Column(modifier = Modifier.weight(1f)) {
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.Bottom) {
-                Text(visibility.target.displayName, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    target.displayName,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f, fill = false)
+                )
+                val belowHorizon = visibility.currentAltitudeDeg <= 0.0
+                val altAzColor = when {
+                    belowHorizon && nightMode -> Color.Gray
+                    belowHorizon -> Color.Red
+                    else -> Color.Unspecified
+                }
                 Text(
                     "%.0f°/%.0f° %s".format(
                         visibility.currentAltitudeDeg,
                         visibility.currentAzimuthDeg,
                         visibility.currentAzimuthDeg.toCardinalDirection()
                     ),
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
+                    color = altAzColor
                 )
             }
-            val subtitle = when (val target = visibility.target) {
-                is CatalogTarget.Messier -> target.objectType
-                is CatalogTarget.PlanetTarget -> "Planet"
+            val subtitle = when (target) {
+                is CatalogTarget.Messier -> "${target.objectType}  •  Mag %.1f".format(target.apparentMagnitude)
+                is CatalogTarget.PlanetTarget -> "Planet  •  Mag %.1f".format(target.planet.meanApparentMagnitude)
+                is CatalogTarget.Ngc -> if (target.apparentMagnitude != null) {
+                    "${target.objectType}  •  Mag %.1f".format(target.apparentMagnitude)
+                } else {
+                    target.objectType
+                }
             }
             Text(subtitle, style = MaterialTheme.typography.bodySmall)
+            if (!filterText.isNullOrBlank()) {
+                Text("Filter: $filterText", style = MaterialTheme.typography.bodySmall)
+            }
         }
         Column(horizontalAlignment = Alignment.End) {
             Text("Max ${window.maxAltitudeDeg.toInt()}°", style = MaterialTheme.typography.bodyMedium)
@@ -234,5 +372,47 @@ private fun ObjectRow(visibility: ObjectVisibility, zone: ZoneId) {
             }
             Text(rangeText, style = MaterialTheme.typography.bodySmall)
         }
+    }
+}
+
+@Composable
+private fun FilterButton(hasFilter: Boolean, nightMode: Boolean, onClick: () -> Unit) {
+    val backgroundColor = when {
+        nightMode && hasFilter -> NightRed
+        nightMode -> NightBlack
+        hasFilter -> MaterialTheme.colorScheme.primaryContainer
+        else -> MaterialTheme.colorScheme.surfaceVariant
+    }
+    val textColor = when {
+        nightMode && hasFilter -> NightBlack
+        nightMode -> NightRed
+        else -> Color.Unspecified
+    }
+    val border = if (nightMode && !hasFilter) BorderStroke(1.dp, NightRed) else null
+    Surface(
+        modifier = Modifier.size(28.dp).clickable(onClick = onClick),
+        shape = CircleShape,
+        color = backgroundColor,
+        border = border
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Text("F", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = textColor)
+        }
+    }
+}
+
+@Composable
+private fun FavoriteButton(isFavorite: Boolean, nightMode: Boolean, onClick: () -> Unit) {
+    val tint = if (nightMode) NightRed else MaterialTheme.colorScheme.primary
+    Box(
+        modifier = Modifier.size(28.dp).clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.StarBorder,
+            contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+            tint = tint,
+            modifier = Modifier.size(20.dp)
+        )
     }
 }

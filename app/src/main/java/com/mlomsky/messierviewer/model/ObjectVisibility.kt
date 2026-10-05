@@ -20,4 +20,6 @@ data class ObjectVisibility(
         get() = currentAltitudeDeg >= RiseSetThresholds.STAR_OR_PLANET
 }
 
-enum class SortMode { NAME, MAX_ELEVATION, START_TIME, END_TIME, NOW }
+enum class SortMode { NAME, MAX_ELEVATION, START_TIME, END_TIME, NOW, FAVORITES }
+
+enum class CatalogSource { PLANETS, MESSIER, NGC }

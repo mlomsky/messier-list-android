@@ -10,7 +10,8 @@ data class MessierEntry(
     val objectType: String,
     val raDeg: Double,
     val decDeg: Double,
-    val commonName: String?
+    val commonName: String?,
+    val apparentMagnitude: Double
 )
 
 object MessierCatalog {
@@ -42,6 +43,25 @@ object MessierCatalog {
         97 to "Owl Nebula",
         101 to "Pinwheel Galaxy",
         104 to "Sombrero Galaxy"
+    )
+
+    // Apparent (visual) magnitudes, keyed by Messier number. Source: skyatnightmagazine.com's
+    // Messier catalogue reference table.
+    private val magnitudes: Map<Int, Double> = mapOf(
+        1 to 8.4, 2 to 6.5, 3 to 6.2, 4 to 5.6, 5 to 5.6, 6 to 5.3, 7 to 4.1, 8 to 6.0, 9 to 7.7,
+        10 to 6.6, 11 to 6.3, 12 to 6.7, 13 to 5.8, 14 to 7.6, 15 to 6.2, 16 to 6.4, 17 to 7.0,
+        18 to 7.5, 19 to 6.8, 20 to 9.0, 21 to 6.5, 22 to 5.1, 23 to 6.9, 24 to 4.6, 25 to 6.5,
+        26 to 8.0, 27 to 7.4, 28 to 6.8, 29 to 7.1, 30 to 7.2, 31 to 3.4, 32 to 8.1, 33 to 5.7,
+        34 to 5.5, 35 to 5.3, 36 to 6.3, 37 to 6.2, 38 to 7.4, 39 to 4.6, 40 to 8.4, 41 to 4.6,
+        42 to 4.0, 43 to 9.0, 44 to 3.7, 45 to 1.6, 46 to 6.0, 47 to 5.2, 48 to 5.5, 49 to 8.4,
+        50 to 6.3, 51 to 8.4, 52 to 7.3, 53 to 7.6, 54 to 7.6, 55 to 6.3, 56 to 8.3, 57 to 8.8,
+        58 to 9.7, 59 to 9.6, 60 to 8.8, 61 to 9.7, 62 to 6.5, 63 to 8.6, 64 to 8.5, 65 to 9.3,
+        66 to 8.9, 67 to 6.1, 68 to 7.8, 69 to 7.6, 70 to 7.9, 71 to 8.2, 72 to 9.3, 73 to 9.0,
+        74 to 9.4, 75 to 8.5, 76 to 10.1, 77 to 8.9, 78 to 8.3, 79 to 7.7, 80 to 7.3, 81 to 6.9,
+        82 to 8.4, 83 to 7.6, 84 to 9.1, 85 to 9.1, 86 to 8.9, 87 to 8.6, 88 to 9.6, 89 to 9.8,
+        90 to 9.5, 91 to 10.2, 92 to 6.4, 93 to 6.0, 94 to 8.2, 95 to 9.7, 96 to 9.2, 97 to 9.9,
+        98 to 10.1, 99 to 9.9, 100 to 9.3, 101 to 7.9, 102 to 9.9, 103 to 7.4, 104 to 8.0,
+        105 to 9.3, 106 to 8.4, 107 to 7.9, 108 to 10.0, 109 to 9.8, 110 to 8.5
     )
 
     private data class Raw(val number: Int, val type: String, val ra: Double, val dec: Double)
@@ -160,6 +180,6 @@ object MessierCatalog {
     )
 
     val entries: List<MessierEntry> = raw.map { r ->
-        MessierEntry(r.number, r.type, r.ra, r.dec, commonNames[r.number])
+        MessierEntry(r.number, r.type, r.ra, r.dec, commonNames[r.number], magnitudes.getValue(r.number))
     }
 }

@@ -41,7 +41,14 @@ internal val EARTH_ELEMENTS = OrbitalElements(
     longNode0 = 0.0, longNodeDot = 0.0
 )
 
-enum class Planet(val displayName: String, internal val elements: OrbitalElements) {
+enum class Planet(
+    val displayName: String,
+    internal val elements: OrbitalElements,
+    /** Mean apparent (visual) magnitude, per Wikipedia's "Apparent magnitude" reference table.
+     * Planets vary continuously in brightness depending on their position; this mean value is
+     * a representative figure for display, not a live computation. */
+    val meanApparentMagnitude: Double
+) {
     MERCURY(
         "Mercury",
         OrbitalElements(
@@ -51,7 +58,8 @@ enum class Planet(val displayName: String, internal val elements: OrbitalElement
             l0 = 252.25032350, lDot = 149472.67411175,
             longPeri0 = 77.45779628, longPeriDot = 0.16047689,
             longNode0 = 48.33076593, longNodeDot = -0.12534081
-        )
+        ),
+        meanApparentMagnitude = 0.23
     ),
     VENUS(
         "Venus",
@@ -62,7 +70,8 @@ enum class Planet(val displayName: String, internal val elements: OrbitalElement
             l0 = 181.97909950, lDot = 58517.81538729,
             longPeri0 = 131.60246718, longPeriDot = 0.00268329,
             longNode0 = 76.67984255, longNodeDot = -0.27769418
-        )
+        ),
+        meanApparentMagnitude = -4.14
     ),
     MARS(
         "Mars",
@@ -73,7 +82,8 @@ enum class Planet(val displayName: String, internal val elements: OrbitalElement
             l0 = -4.55343205, lDot = 19140.30268499,
             longPeri0 = -23.94362959, longPeriDot = 0.44441088,
             longNode0 = 49.55953891, longNodeDot = -0.29257343
-        )
+        ),
+        meanApparentMagnitude = 0.71
     ),
     JUPITER(
         "Jupiter",
@@ -84,7 +94,8 @@ enum class Planet(val displayName: String, internal val elements: OrbitalElement
             l0 = 34.39644051, lDot = 3034.74612775,
             longPeri0 = 14.72847983, longPeriDot = 0.21252668,
             longNode0 = 100.47390909, longNodeDot = 0.20469106
-        )
+        ),
+        meanApparentMagnitude = -2.20
     ),
     SATURN(
         "Saturn",
@@ -95,7 +106,8 @@ enum class Planet(val displayName: String, internal val elements: OrbitalElement
             l0 = 49.95424423, lDot = 1222.49362201,
             longPeri0 = 92.59887831, longPeriDot = -0.41897216,
             longNode0 = 113.66242448, longNodeDot = -0.28867794
-        )
+        ),
+        meanApparentMagnitude = 0.46
     ),
     URANUS(
         "Uranus",
@@ -106,7 +118,8 @@ enum class Planet(val displayName: String, internal val elements: OrbitalElement
             l0 = 313.23810451, lDot = 428.48202785,
             longPeri0 = 170.95427630, longPeriDot = 0.40805281,
             longNode0 = 74.01692503, longNodeDot = 0.04240589
-        )
+        ),
+        meanApparentMagnitude = 5.68
     ),
     NEPTUNE(
         "Neptune",
@@ -117,6 +130,7 @@ enum class Planet(val displayName: String, internal val elements: OrbitalElement
             l0 = -55.12002969, lDot = 218.45945325,
             longPeri0 = 44.96476227, longPeriDot = -0.32241464,
             longNode0 = 131.78422574, longNodeDot = -0.00508664
-        )
+        ),
+        meanApparentMagnitude = 7.78
     )
 }
