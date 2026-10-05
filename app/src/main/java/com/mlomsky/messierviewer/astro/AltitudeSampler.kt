@@ -31,19 +31,7 @@ object AltitudeSampler {
         thresholdDeg: Double,
         stepMinutes: Long = 2
     ): VisibilityWindow {
-        val samples = mutableListOf<AltitudeSample>()
-        var t = start
-        while (!t.isAfter(end)) {
-            val jd = JulianDate.fromInstant(t)
-            val horizontal = position.at(jd).toHorizontal(observer, jd)
-            samples.add(AltitudeSample(t, horizontal.altitudeDeg, horizontal.azimuthDeg))
-            t = t.plus(Duration.ofMinutes(stepMinutes))
-        }
-        if (samples.last().time != end) {
-            val jd = JulianDate.fromInstant(end)
-            val horizontal = position.at(jd).toHorizontal(observer, jd)
-            samples.add(AltitudeSample(end, horizontal.altitudeDeg, horizontal.azimuthDeg))
-        }
+        val samples = series(observer, position, start, end, stepMinutes)
 
         var maxSample = samples[0]
         for (s in samples) if (s.altitudeDeg > maxSample.altitudeDeg) maxSample = s
@@ -73,6 +61,30 @@ object AltitudeSampler {
             maxAltitudeDeg = maxSample.altitudeDeg,
             azimuthAtMax = maxSample.azimuthDeg
         )
+    }
+
+    /** Samples an object's altitude/azimuth at [stepMinutes] resolution across [start, end], e.g. for charting. */
+    fun series(
+        observer: Observer,
+        position: EquatorialPositionProvider,
+        start: Instant,
+        end: Instant,
+        stepMinutes: Long = 30
+    ): List<AltitudeSample> {
+        val samples = mutableListOf<AltitudeSample>()
+        var t = start
+        while (!t.isAfter(end)) {
+            val jd = JulianDate.fromInstant(t)
+            val horizontal = position.at(jd).toHorizontal(observer, jd)
+            samples.add(AltitudeSample(t, horizontal.altitudeDeg, horizontal.azimuthDeg))
+            t = t.plus(Duration.ofMinutes(stepMinutes))
+        }
+        if (samples.last().time != end) {
+            val jd = JulianDate.fromInstant(end)
+            val horizontal = position.at(jd).toHorizontal(observer, jd)
+            samples.add(AltitudeSample(end, horizontal.altitudeDeg, horizontal.azimuthDeg))
+        }
+        return samples
     }
 
     private fun interpolateCrossing(a: AltitudeSample, b: AltitudeSample, thresholdDeg: Double): Instant {

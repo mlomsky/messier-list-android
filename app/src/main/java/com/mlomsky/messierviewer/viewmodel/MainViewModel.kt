@@ -3,6 +3,7 @@ package com.mlomsky.messierviewer.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.mlomsky.messierviewer.astro.AltitudeSample
 import com.mlomsky.messierviewer.astro.AltitudeSampler
 import com.mlomsky.messierviewer.astro.EquatorialCoordinates
 import com.mlomsky.messierviewer.astro.EquatorialPositionProvider
@@ -52,6 +53,18 @@ data class SunMoonTimes(
     val moonIlluminationPercent: Double
 )
 
+data class ElevationChartState(
+    val target: CatalogTarget,
+    val samples: List<AltitudeSample>,
+    val zone: ZoneId
+)
+
+data class SunMoonChartState(
+    val sunSamples: List<AltitudeSample>,
+    val moonSamples: List<AltitudeSample>,
+    val zone: ZoneId
+)
+
 data class ObjectSearchFilter(
     val nameQuery: String = "",
     val typeQuery: String = "",
@@ -93,6 +106,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _currentTime = MutableStateFlow(Instant.now())
     val currentTime: StateFlow<Instant> = _currentTime.asStateFlow()
+
+    private val _elevationChart = MutableStateFlow<ElevationChartState?>(null)
+    val elevationChart: StateFlow<ElevationChartState?> = _elevationChart.asStateFlow()
+
+    private val _sunMoonChart = MutableStateFlow<SunMoonChartState?>(null)
+    val sunMoonChart: StateFlow<SunMoonChartState?> = _sunMoonChart.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -233,6 +252,51 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             preferencesRepository.toggleFavorite(objectId)
         }
+    }
+
+    fun showElevationChart(target: CatalogTarget) {
+        viewModelScope.launch {
+            val location = _uiState.value.location
+            val session = _uiState.value.session ?: return@launch
+            val samples = withContext(Dispatchers.Default) {
+                val observer = Observer(location.latitudeDeg, location.longitudeDeg, location.elevationMeters)
+                AltitudeSampler.series(observer, providerFor(target), session.start, session.end)
+            }
+            _elevationChart.value = ElevationChartState(target, samples, ZoneId.systemDefault())
+        }
+    }
+
+    fun dismissElevationChart() {
+        _elevationChart.value = null
+    }
+
+    fun showSunMoonChart() {
+        viewModelScope.launch {
+            val location = _uiState.value.location
+            val session = _uiState.value.session ?: return@launch
+            val (sunSamples, moonSamples) = withContext(Dispatchers.Default) {
+                val observer = Observer(location.latitudeDeg, location.longitudeDeg, location.elevationMeters)
+                val sunProvider = EquatorialPositionProvider { jd -> SunPosition.geocentricEquatorial(jd) }
+                val moonProvider = EquatorialPositionProvider { jd -> MoonPosition.geocentric(jd).equatorial }
+                val sun = AltitudeSampler.series(observer, sunProvider, session.start, session.end, stepMinutes = 15)
+                val moon = AltitudeSampler.series(observer, moonProvider, session.start, session.end, stepMinutes = 15)
+                sun to moon
+            }
+            _sunMoonChart.value = SunMoonChartState(sunSamples, moonSamples, ZoneId.systemDefault())
+        }
+    }
+
+    fun dismissSunMoonChart() {
+        _sunMoonChart.value = null
+    }
+
+    private fun providerFor(target: CatalogTarget): EquatorialPositionProvider = when (target) {
+        is CatalogTarget.Messier ->
+            EquatorialPositionProvider { EquatorialCoordinates(target.rightAscensionDeg, target.declinationDeg) }
+        is CatalogTarget.Ngc ->
+            EquatorialPositionProvider { EquatorialCoordinates(target.rightAscensionDeg, target.declinationDeg) }
+        is CatalogTarget.PlanetTarget ->
+            EquatorialPositionProvider { jd -> PlanetPositions.geocentricEquatorial(target.planet, jd) }
     }
 
     private suspend fun recomputeForCurrentLocation() {

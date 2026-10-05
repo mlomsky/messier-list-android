@@ -1,5 +1,31 @@
 # Changelog
 
+## Version 2.1 (2026-10-05)
+
+### Charts
+- **Elevation chart**: tap any object's name (any catalog) to see its
+  altitude plotted across tonight's session, with the below-horizon portion
+  shaded.
+- **Sun & Moon chart**: tap Sunset, Sunrise, Moonrise, Moonset, or
+  Illumination to see the Sun's and Moon's altitude plotted together across
+  the session. The background shades by the Sun's own altitude — clear in
+  daylight, a light band through civil/nautical twilight, a darker band for
+  astronomical twilight (-12° to -18°), and the darkest band once it's fully
+  dark below -18° — with a legend underneath. Both charts share an
+  `AltitudeSampler.series()` helper (factored out of the existing rise/set
+  sampler) and a "now" marker when the current time falls within the window.
+
+### NGC data quality
+- Removed 18 NGC entries whose Wikipedia-sourced type was "Nonexistent",
+  "Doesn't exist", or bare "Unknown" (4,034 → 4,016 entries).
+- NGC rows with no published magnitude now show "Mag --" instead of omitting
+  the magnitude segment, matching Messier's subtitle format.
+
+### Housekeeping
+- `versionCode`/`versionName` bumped to 3 / "2.1". About dialog and splash
+  screen updated to match, with a "What's new in v2.1" summary alongside the
+  existing v2 one.
+
 ## Version 2 (2026-10-04)
 
 ### New catalogs

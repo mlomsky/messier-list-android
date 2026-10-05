@@ -90,7 +90,9 @@ fun MainScreen(
     onFavoriteClick: (String) -> Unit,
     onCatalogToggle: (CatalogSource, Boolean) -> Unit,
     onDisplayFiltersClick: () -> Unit,
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onObjectClick: (CatalogTarget) -> Unit,
+    onSunMoonClick: () -> Unit
 ) {
     val zone = ZoneId.systemDefault()
 
@@ -127,7 +129,7 @@ fun MainScreen(
                 onSearchClick
             )
             HeaderSection(state.location, currentTime, zone)
-            SunMoonSection(state.sunMoonTimes, zone)
+            SunMoonSection(state.sunMoonTimes, zone, onSunMoonClick)
             SortButtonsRow(state.sortMode, state.nightMode, onSortSelected)
             if (state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -141,6 +143,7 @@ fun MainScreen(
                     state.favorites,
                     onFilterClick,
                     onFavoriteClick,
+                    onObjectClick,
                     state.nightMode
                 )
             }
@@ -162,23 +165,26 @@ private fun HeaderSection(location: AppLocation, currentTime: Instant, zone: Zon
 }
 
 @Composable
-private fun SunMoonSection(times: SunMoonTimes, zone: ZoneId) {
+private fun SunMoonSection(times: SunMoonTimes, zone: ZoneId, onClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        SunMoonStat("Sunset", times.sunset.formatTime(zone))
-        SunMoonStat("Sunrise", times.sunrise.formatTime(zone))
-        SunMoonStat("Moonrise", times.moonrise.formatTime(zone))
-        SunMoonStat("Moonset", times.moonset.formatTime(zone))
-        SunMoonStat("Illumination", "%.0f%%".format(times.moonIlluminationPercent))
+        SunMoonStat("Sunset", times.sunset.formatTime(zone), onClick)
+        SunMoonStat("Sunrise", times.sunrise.formatTime(zone), onClick)
+        SunMoonStat("Moonrise", times.moonrise.formatTime(zone), onClick)
+        SunMoonStat("Moonset", times.moonset.formatTime(zone), onClick)
+        SunMoonStat("Illumination", "%.0f%%".format(times.moonIlluminationPercent), onClick)
     }
     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 }
 
 @Composable
-private fun SunMoonStat(label: String, value: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+private fun SunMoonStat(label: String, value: String, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.clickable(onClick = onClick)
+    ) {
         Text(value, style = MaterialTheme.typography.titleMedium)
         Text(label, style = MaterialTheme.typography.labelSmall)
     }
@@ -287,6 +293,7 @@ private fun ObjectListSection(
     favorites: Set<String>,
     onFilterClick: (CatalogTarget) -> Unit,
     onFavoriteClick: (String) -> Unit,
+    onObjectClick: (CatalogTarget) -> Unit,
     nightMode: Boolean
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -298,6 +305,7 @@ private fun ObjectListSection(
                 visibility.target.id in favorites,
                 onFilterClick,
                 onFavoriteClick,
+                onObjectClick,
                 nightMode
             )
             HorizontalDivider()
@@ -313,6 +321,7 @@ private fun ObjectRow(
     isFavorite: Boolean,
     onFilterClick: (CatalogTarget) -> Unit,
     onFavoriteClick: (String) -> Unit,
+    onObjectClick: (CatalogTarget) -> Unit,
     nightMode: Boolean
 ) {
     val window = visibility.window
@@ -331,7 +340,7 @@ private fun ObjectRow(
                 Text(
                     target.displayName,
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.weight(1f, fill = false)
+                    modifier = Modifier.weight(1f, fill = false).clickable { onObjectClick(target) }
                 )
                 val belowHorizon = visibility.currentAltitudeDeg <= 0.0
                 val altAzColor = when {
@@ -352,11 +361,8 @@ private fun ObjectRow(
             val subtitle = when (target) {
                 is CatalogTarget.Messier -> "${target.objectType}  •  Mag %.1f".format(target.apparentMagnitude)
                 is CatalogTarget.PlanetTarget -> "Planet  •  Mag %.1f".format(target.planet.meanApparentMagnitude)
-                is CatalogTarget.Ngc -> if (target.apparentMagnitude != null) {
-                    "${target.objectType}  •  Mag %.1f".format(target.apparentMagnitude)
-                } else {
-                    target.objectType
-                }
+                is CatalogTarget.Ngc -> "${target.objectType}  •  Mag " +
+                    (target.apparentMagnitude?.let { "%.1f".format(it) } ?: "--")
             }
             Text(subtitle, style = MaterialTheme.typography.bodySmall)
             if (!filterText.isNullOrBlank()) {

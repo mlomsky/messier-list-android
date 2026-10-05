@@ -9,8 +9,8 @@ current viewing session — a port of the logic from the
 ## Status
 
 Builds, runs, and has been tested on both an emulator and a physical device
-(Galaxy S24+). Now at **version 2** — see [CHANGELOG.md](CHANGELOG.md) for
-what's new in v2, and [NOTES.md](NOTES.md) for a running session-by-session
+(Galaxy S24+). Now at **version 2.1** — see [CHANGELOG.md](CHANGELOG.md) for
+what's new, and [NOTES.md](NOTES.md) for a running session-by-session
 log, known caveats, and open ideas for next time.
 
 ## Core features
