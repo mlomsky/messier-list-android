@@ -1,8 +1,11 @@
-# Installing Messier Tonight (Beta Test Build)
+# Installing Messier Tonight (Beta Test Build, v2)
 
-Thanks for taking a look! This is an early test version of an Android app
-I built — it tells you what's worth looking at tonight (every Messier
-object and visible planet), based on your location and the current time.
+Thanks for taking a look! This is a test version of an Android app I built —
+it tells you what's worth looking at tonight (Messier objects, NGC objects,
+and visible planets), based on your location and the current time.
+
+Already have v1 installed? No need to uninstall it first — this installs
+right over it, and your favorites/filter notes carry over automatically.
 
 This isn't on the Play Store yet, so installing it looks a little different
 than a normal app. It's completely safe — Android just doesn't know this
