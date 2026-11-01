@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mlomsky.messierviewer.BuildConfig
 
 private val SplashBackground = Color(0xFF0B1026)
 private val SplashForeground = Color(0xFFF5F1E3)
@@ -27,22 +29,23 @@ fun WelcomeScreen() {
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            AppIconBadge(size = 96.dp)
+            AppIconBadge(height = 160.dp)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                "Messier Tonight",
+                "WAA Presents\nViewing Tonight",
                 style = MaterialTheme.typography.headlineMedium,
-                color = SplashForeground
+                color = SplashForeground,
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                "Version 2.1",
+                "Version ${BuildConfig.VERSION_NAME}",
                 style = MaterialTheme.typography.bodySmall,
                 color = SplashForeground
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                "Created by Michael Lomsky",
+                "Created by Michael Lomsky for the Westchester Amateur Astronomers",
                 style = MaterialTheme.typography.bodyMedium,
                 color = SplashForeground
             )

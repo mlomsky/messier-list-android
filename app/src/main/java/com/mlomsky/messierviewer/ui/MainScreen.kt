@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mlomsky.messierviewer.BuildConfig
 import com.mlomsky.messierviewer.astro.toCardinalDirection
@@ -100,7 +101,20 @@ fun MainScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Messier Tonight  V${BuildConfig.VERSION_NAME}")
+                    Column {
+                        Text(
+                            "WAA Presents",
+                            style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            "Viewing Tonight  V${BuildConfig.VERSION_NAME}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 },
                 actions = {
                     IconButton(onClick = onHelpClick) {
@@ -245,10 +259,10 @@ private fun CatalogToggleRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        SortButton("Planets", CatalogSource.PLANETS in enabledCatalogs, nightMode) {
+        SortButton("P", CatalogSource.PLANETS in enabledCatalogs, nightMode) {
             onCatalogToggle(CatalogSource.PLANETS, CatalogSource.PLANETS !in enabledCatalogs)
         }
-        SortButton("Messier", CatalogSource.MESSIER in enabledCatalogs, nightMode) {
+        SortButton("M", CatalogSource.MESSIER in enabledCatalogs, nightMode) {
             onCatalogToggle(CatalogSource.MESSIER, CatalogSource.MESSIER !in enabledCatalogs)
         }
         SortButton("NGC", CatalogSource.NGC in enabledCatalogs, nightMode) {
@@ -273,7 +287,11 @@ private fun RowScope.SortButton(label: String, selected: Boolean, nightMode: Boo
         modifier = Modifier.weight(1f),
         selected = selected,
         onClick = onClick,
-        label = { Text(label, maxLines = 1) },
+        label = {
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Text(label, maxLines = 1)
+            }
+        },
         colors = if (nightMode) {
             FilterChipDefaults.filterChipColors(
                 selectedContainerColor = NightRed,
@@ -361,6 +379,7 @@ private fun ObjectRow(
             val subtitle = when (target) {
                 is CatalogTarget.Messier -> "${target.objectType}  •  Mag %.1f".format(target.apparentMagnitude)
                 is CatalogTarget.PlanetTarget -> "Planet  •  Mag %.1f".format(target.planet.meanApparentMagnitude)
+                is CatalogTarget.MoonTarget -> "Moon  •  Mag %.1f".format(target.apparentMagnitude)
                 is CatalogTarget.Ngc -> "${target.objectType}  •  Mag " +
                     (target.apparentMagnitude?.let { "%.1f".format(it) } ?: "--")
             }

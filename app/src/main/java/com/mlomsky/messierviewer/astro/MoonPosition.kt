@@ -71,11 +71,28 @@ object MoonPosition {
      * geocentric-elongation method (ch. 48): k = (1 - cos(elongation from the Sun)) / 2.
      */
     fun illuminatedFraction(jd: Double): Double {
+        val cosElongation = cosElongationFromSun(jd)
+        return (1 - cosElongation) / 2
+    }
+
+    /**
+     * Approximate apparent visual magnitude for the Moon's current phase, via the standard
+     * phase-angle formula (Explanatory Supplement to the Astronomical Almanac): V = -12.73 +
+     * 0.026|p| + 4e-9 p^4, where p is the phase angle in degrees, approximated here as
+     * 180 minus the geocentric Sun-Moon elongation (full moon at p=0, new moon at p=180).
+     */
+    fun apparentMagnitude(jd: Double): Double {
+        // elongationDeg is in [0, 180], so phaseAngleDeg is too - no need to take its absolute value.
+        val elongationDeg = acosDeg(cosElongationFromSun(jd))
+        val phaseAngleDeg = 180.0 - elongationDeg
+        return -12.73 + 0.026 * phaseAngleDeg + 4e-9 * Math.pow(phaseAngleDeg, 4.0)
+    }
+
+    private fun cosElongationFromSun(jd: Double): Double {
         val moon = geocentric(jd).equatorial
         val sun = SunPosition.geocentricEquatorial(jd)
-        val cosElongation = sinDeg(moon.declinationDeg) * sinDeg(sun.declinationDeg) +
+        return sinDeg(moon.declinationDeg) * sinDeg(sun.declinationDeg) +
             cosDeg(moon.declinationDeg) * cosDeg(sun.declinationDeg) *
             cosDeg(moon.rightAscensionDeg - sun.rightAscensionDeg)
-        return (1 - cosElongation) / 2
     }
 }

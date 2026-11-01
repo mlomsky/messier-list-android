@@ -115,6 +115,18 @@ app/src/main/java/com/mlomsky/messierviewer/
 - Messier RA/Dec are J2000 with no precession correction applied; the drift
   by 2026 is well under the accuracy this app needs.
 
+## Possible future changes (in discussion)
+
+- **Sunset/sunrise-aware viewing session**: instead of a fixed 6pm-6am
+  window, the session could flex outward to always cover real dusk-to-dawn —
+  starting at sunset if that's earlier than 6pm, and ending at sunrise if
+  that's later than 6am (so the window only ever widens to fit the actual
+  dark-sky hours for the current date/location, never shrinks below the
+  current 6pm-6am baseline). This is a private working note between Michael
+  and Claude for now, not a decided feature — Michael wants to run the idea
+  by fellow Westchester Amateur Astronomers club members before committing
+  to it.
+
 ## Building
 
 1. Install [Android Studio](https://developer.android.com/studio) (bundles

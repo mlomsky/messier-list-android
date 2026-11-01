@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mlomsky.messierviewer.BuildConfig
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -25,26 +26,50 @@ private val aboutDateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy")
 fun AboutDialog(onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Messier Tonight") },
+        title = {
+            Text(
+                "WAA Presents\nViewing Tonight",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth().heightIn(max = 420.dp).verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AppIconBadge()
+                AppIconBadgeFillWidth()
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    "Version 2.1  •  ${LocalDate.now().format(aboutDateFormatter)}",
+                    "Version ${BuildConfig.VERSION_NAME}  •  ${LocalDate.now().format(aboutDateFormatter)}",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Created by Michael Lomsky", style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    "Created by Michael Lomsky for the Westchester Amateur Astronomers",
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    "A Messier object and planet visibility tracker for tonight's observing session.",
+                    "An observing tool to help you pick what objects you'd like to see among the Messier, NGC, and planet catalogs.",
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text("What's new in v2.2", style = MaterialTheme.typography.labelLarge)
+                Spacer(modifier = Modifier.height(4.dp))
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    val latestChanges = listOf(
+                        "Rebranded as \"WAA Presents Viewing Tonight\" for the Westchester Amateur Astronomers",
+                        "Added the Moon to the Planets list",
+                        "The limiting-magnitude filter now applies to Planets and Messier too, not just NGC",
+                        "P / M / NGC catalog buttons shortened so labels stop getting cut off on some phones"
+                    )
+                    latestChanges.forEach { change ->
+                        Text("•  $change", style = MaterialTheme.typography.bodySmall)
+                    }
+                }
                 Spacer(modifier = Modifier.height(12.dp))
                 Text("What's new in v2.1", style = MaterialTheme.typography.labelLarge)
                 Spacer(modifier = Modifier.height(4.dp))

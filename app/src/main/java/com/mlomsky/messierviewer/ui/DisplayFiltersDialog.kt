@@ -40,13 +40,13 @@ fun DisplayFiltersDialog(
         text = {
             Column {
                 Text(
-                    "Only show NGC objects at or brighter than this magnitude (lower numbers are brighter). Objects with no published magnitude are always shown.",
+                    "Only show objects (Planets, Messier, and NGC) at or brighter than this magnitude (lower numbers are brighter). Objects with no published magnitude are always shown.",
                     style = MaterialTheme.typography.bodySmall
                 )
                 OutlinedTextField(
                     value = magnitudeText,
                     onValueChange = { magnitudeText = it },
-                    label = { Text("NGC limiting magnitude") },
+                    label = { Text("Limiting magnitude") },
                     singleLine = true,
                     isError = parsedMagnitude == null,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),

@@ -23,6 +23,11 @@ sealed interface CatalogTarget {
         override val displayName: String get() = planet.displayName
     }
 
+    data class MoonTarget(val apparentMagnitude: Double) : CatalogTarget {
+        override val id: String get() = "MOON"
+        override val displayName: String get() = "Moon"
+    }
+
     data class Ngc(
         val number: Int,
         val commonName: String?,
@@ -42,4 +47,5 @@ val CatalogTarget.typeLabel: String
         is CatalogTarget.Messier -> objectType
         is CatalogTarget.Ngc -> objectType
         is CatalogTarget.PlanetTarget -> "Planet"
+        is CatalogTarget.MoonTarget -> "Moon"
     }

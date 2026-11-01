@@ -44,8 +44,8 @@ fun HelpDialog(onDismiss: () -> Unit) {
                         "Uses your phone's GPS by default (falls back to New York City if that's unavailable). Tap the location icon to search for a different city or address instead."
                     )
                     HelpItem(
-                        "Planets / Messier / NGC buttons",
-                        "Independently turn each catalog on or off. NGC adds thousands of fainter deep-sky objects beyond the 110 Messier objects — pair it with the magnitude limit below to keep the list manageable."
+                        "P / M / NGC buttons",
+                        "P (Planets), M (Messier), and NGC — independently turn each catalog on or off. NGC adds thousands of fainter deep-sky objects beyond the 110 Messier objects — pair it with the magnitude limit below to keep the list manageable."
                     )
                     HelpItem(
                         "Search (magnifying glass)",
@@ -53,7 +53,7 @@ fun HelpDialog(onDismiss: () -> Unit) {
                     )
                     HelpItem(
                         "Display Filters (tune icon)",
-                        "Set the dimmest magnitude NGC objects to include (lower numbers are brighter; objects with no published magnitude are always shown), and optionally hide any object that's currently below the horizon, across all catalogs."
+                        "Set the dimmest magnitude to include, across all catalogs — P, M, and NGC (lower numbers are brighter; objects with no published magnitude are always shown), and optionally hide any object that's currently below the horizon, also across all catalogs."
                     )
                     HelpItem(
                         "Sunrise/sunset & moon",

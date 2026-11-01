@@ -297,6 +297,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             EquatorialPositionProvider { EquatorialCoordinates(target.rightAscensionDeg, target.declinationDeg) }
         is CatalogTarget.PlanetTarget ->
             EquatorialPositionProvider { jd -> PlanetPositions.geocentricEquatorial(target.planet, jd) }
+        is CatalogTarget.MoonTarget ->
+            EquatorialPositionProvider { jd -> MoonPosition.geocentric(jd).equatorial }
     }
 
     private suspend fun recomputeForCurrentLocation() {
@@ -342,6 +344,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val objects = mutableListOf<ObjectVisibility>()
             if (CatalogSource.MESSIER in enabledCatalogs) {
                 for (entry in MessierCatalog.entries) {
+                    if (entry.apparentMagnitude > ngcMagnitudeLimit) continue
                     val target = CatalogTarget.Messier(
                         entry.number, entry.commonName, entry.objectType, entry.raDeg, entry.decDeg, entry.apparentMagnitude
                     )
@@ -353,9 +356,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             if (CatalogSource.PLANETS in enabledCatalogs) {
                 for (planet in Planet.entries) {
+                    if (planet.meanApparentMagnitude > ngcMagnitudeLimit) continue
                     val target = CatalogTarget.PlanetTarget(planet)
                     val provider = EquatorialPositionProvider { jd -> PlanetPositions.geocentricEquatorial(planet, jd) }
                     val window = AltitudeSampler.sample(observer, provider, session.start, session.end, RiseSetThresholds.STAR_OR_PLANET)
+                    val nowHorizontal = provider.at(nowJd).toHorizontal(observer, nowJd)
+                    objects.add(ObjectVisibility(target, window, nowHorizontal.altitudeDeg, nowHorizontal.azimuthDeg))
+                }
+                val moonMagnitude = MoonPosition.apparentMagnitude(nowJd)
+                if (moonMagnitude <= ngcMagnitudeLimit) {
+                    val target = CatalogTarget.MoonTarget(moonMagnitude)
+                    val provider = EquatorialPositionProvider { jd -> MoonPosition.geocentric(jd).equatorial }
+                    // The Moon's rise/set threshold accounts for its parallax and apparent size (Meeus
+                    // 15.1), unlike the fixed threshold used for stars and planets.
+                    val window = AltitudeSampler.sample(observer, provider, session.start, session.end, RiseSetThresholds.moon(moonParallax))
                     val nowHorizontal = provider.at(nowJd).toHorizontal(observer, nowJd)
                     objects.add(ObjectVisibility(target, window, nowHorizontal.altitudeDeg, nowHorizontal.azimuthDeg))
                 }
