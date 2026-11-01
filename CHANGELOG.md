@@ -1,5 +1,34 @@
 # Changelog
 
+## Version 2.2 (2026-11-01)
+
+### Rebrand
+- Renamed the app to "WAA Presents Viewing Tonight", crediting "Created by
+  Michael Lomsky for the Westchester Amateur Astronomers" throughout (top
+  bar, splash screen, About dialog). Replaced the app's branding image with
+  the WAA club logo on the splash screen and About dialog.
+- `versionCode`/`versionName` bumped to 4 / "2.2".
+
+### The Moon joins the Planets list
+- The Moon now appears in the Planets ("P") catalog alongside the other
+  planets, with a live apparent magnitude computed from its current phase
+  (rather than a fixed value, since its brightness swings by roughly 9
+  magnitudes between new and full) and the same parallax-aware rise/set
+  threshold already used for the dedicated Sun/Moon panel.
+
+### Display Filters
+- The limiting-magnitude filter now applies across all three catalogs —
+  Planets, Messier, and NGC — instead of just NGC.
+
+### UI polish and fixes
+- Shortened the Planets/Messier/NGC catalog toggle buttons to "P"/"M"/"NGC"
+  and centered their labels, so they stop getting cut off on testers' phones
+  with narrower buttons.
+- Fixed the About dialog's scrolling: enlarging the club logo had it
+  reserving a fixed, oversized height regardless of how small it actually
+  rendered at the dialog's width, which squeezed the rest of the text out of
+  the visible scroll area.
+
 ## Version 2.1 (2026-10-05)
 
 ### Charts
