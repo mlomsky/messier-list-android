@@ -126,6 +126,18 @@ app/src/main/java/com/mlomsky/messierviewer/
   and Claude for now, not a decided feature — Michael wants to run the idea
   by fellow Westchester Amateur Astronomers club members before committing
   to it.
+- **Setup/alignment helper**: tap on the coordinates/elevation display and a
+  box pops up showing those values, the current time in 24-hour format (as
+  needed by a telescope hand controller), and whether DST is currently in
+  effect. Would be great if it could also recommend alignment stars to use.
+- **Clear Dark Sky chart integration**: pull the Clear Sky Chart for the
+  selected location. Would default to Ward Pound Ridge, but could use either
+  GPS (as it currently does) or a manually entered location.
+- **Planning mode**: an option to set a future date for planning purposes,
+  with a clear "planning mode" indicator shown while active.
+- *(Android)* change the Android app icon to a WAA image.
+- *(Android)* change the splash screen and About text from "created by
+  Michael Lomsky for the WAA" to "created by ML for WAA".
 
 ## Building
 
